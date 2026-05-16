@@ -3,280 +3,345 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>flux·memes 🔮 (sage mode)</title>
-  <!-- Doodle-ish font -->
+  <title>Conjure — Summon anything into existence</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Pangolin&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #f5f5f0;
+      --surface: #ffffff;
+      --border: rgba(0,0,0,0.1);
+      --border-strong: rgba(0,0,0,0.22);
+      --text-primary: #111111;
+      --text-secondary: #555555;
+      --text-tertiary: #999999;
+      --danger-bg: #fff0f0;
+      --danger-text: #c0392b;
+      --radius-md: 12px;
+      --radius-lg: 20px;
+    }
 
     body {
-      background-color: #F9F6F0;
-      font-family: 'Pangolin', cursive;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      font-family: 'DM Sans', system-ui, sans-serif;
+      background: var(--bg);
       min-height: 100vh;
-      padding: 1rem;
-      background-image: radial-gradient(circle at 20% 30%, #E8B4B833 0%, transparent 30%),
-                        radial-gradient(circle at 80% 70%, #B2C9AB33 0%, transparent 40%);
+      display: flex; align-items: center; justify-content: center;
+      padding: 2rem 1rem;
+      color: var(--text-primary);
     }
+
+    .shell { width: 100%; max-width: 480px; }
+
+    .header { text-align: center; margin-bottom: 2.2rem; }
+    .wordmark { display: inline-flex; align-items: center; gap: 10px; margin-bottom: 0.6rem; }
+    .logo {
+      width: 36px; height: 36px; background: var(--text-primary);
+      border-radius: 10px; display: flex; align-items: center; justify-content: center;
+    }
+    .logo svg { width: 18px; height: 18px; stroke: #fff; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+    .brand { font-size: 22px; font-weight: 500; letter-spacing: -0.4px; }
+    .tagline { font-size: 13px; color: var(--text-tertiary); }
 
     .card {
-      background: #FFFDF9;
-      border: 4px dashed #B2C9AB;
-      border-radius: 32px 12px 32px 12px;
-      padding: 2.5rem 2rem;
-      max-width: 520px;
-      width: 100%;
-      box-shadow: 8px 8px 0 #B2C9AB, 12px 12px 0 rgba(0,0,0,0.05);
-      text-align: center;
-      position: relative;
-      overflow: hidden;
+      background: var(--surface);
+      border: 0.5px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.75rem 1.5rem;
     }
 
-    /* squiggly top decoration */
-    .card::before {
-      content: "✧˖°࿐✧˖°";
-      position: absolute;
-      top: -10px;
-      left: 50%;
-      transform: translateX(-50%);
-      font-size: 2.2rem;
-      color: #E8B4B8;
-      letter-spacing: 6px;
-      opacity: 0.8;
+    .field-label {
+      font-size: 11px; font-weight: 500; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--text-tertiary);
+      margin-bottom: 8px; display: block;
     }
 
-    h1 {
-      font-size: 2.2rem;
-      color: #5A7D5C;
-      margin-top: 0.8rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.4rem;
-    }
-    h1 span { font-size: 2.8rem; }
-
-    .sub {
-      color: #7A8B6F;
-      margin-bottom: 1.8rem;
-      font-size: 1rem;
-      letter-spacing: 1px;
-      text-transform: lowercase;
-    }
-
-    textarea, select, button {
-      font-family: 'Pangolin', cursive;
-    }
-
+    .textarea-wrap { position: relative; }
     textarea {
-      width: 100%;
-      padding: 0.9rem;
-      border: 3px solid #D4E2D0;
-      border-radius: 20px 8px 20px 8px;
-      background: #F9F6F0;
-      font-size: 1.05rem;
-      resize: vertical;
-      outline: none;
-      transition: border 0.2s;
-      color: #4A5D4A;
+      width: 100%; background: #f7f7f5;
+      border: 0.5px solid var(--border); border-radius: var(--radius-md);
+      padding: 12px 14px 38px 14px;
+      font-family: 'DM Sans', sans-serif; font-size: 14px; line-height: 1.6;
+      color: var(--text-primary); resize: none; outline: none;
+      transition: border-color 0.15s;
     }
-    textarea:focus {
-      border-color: #B2C9AB;
-      background: #FFFDF9;
-    }
+    textarea::placeholder { color: var(--text-tertiary); }
+    textarea:focus { border-color: var(--border-strong); background: #fff; }
 
-    .ratio-group {
-      margin: 1.2rem 0;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-      justify-content: center;
+    .toolbar {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 6px 10px; pointer-events: none;
     }
-    .ratio-btn {
-      background: transparent;
-      border: 2px solid #D4E2D0;
-      padding: 0.4rem 0.9rem;
-      border-radius: 40px;
-      font-size: 0.9rem;
-      color: #5A7D5C;
-      cursor: pointer;
-      transition: all 0.2s;
+    .charcount { font-size: 11px; color: var(--text-tertiary); }
+    .shuffle-btn {
+      pointer-events: all; background: none;
+      border: 0.5px solid var(--border); border-radius: 6px;
+      padding: 3px 9px; font-family: 'DM Sans', sans-serif;
+      font-size: 11px; color: var(--text-tertiary); cursor: pointer;
+      display: flex; align-items: center; gap: 4px; transition: all 0.15s;
     }
-    .ratio-btn.active {
-      background: #B2C9AB;
-      color: white;
-      border-color: #B2C9AB;
-      box-shadow: 0 2px 6px #B2C9AB66;
-    }
+    .shuffle-btn:hover { color: var(--text-secondary); border-color: var(--border-strong); background: #f0f0ec; }
+    .spin { display: inline-block; transition: transform 0.35s; }
+    .shuffle-btn:hover .spin { transform: rotate(180deg); }
 
-    .generate-btn {
-      background: #E8B4B8;
-      border: none;
-      padding: 0.9rem 2.2rem;
-      font-size: 1.3rem;
-      border-radius: 60px;
-      color: #FFFDF9;
-      margin: 0.8rem 0 1.5rem;
-      cursor: pointer;
-      transition: 0.15s;
-      letter-spacing: 0.5px;
-      box-shadow: 0 5px 0 #D49B9F, 0 6px 12px rgba(0,0,0,0.05);
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
+    .ratio-section { margin: 1.25rem 0; }
+    .ratios { display: flex; gap: 8px; }
+    .ratio {
+      flex: 1; background: #f7f7f5; border: 0.5px solid var(--border);
+      border-radius: 10px; padding: 10px 6px 8px; cursor: pointer;
+      transition: all 0.15s; display: flex; flex-direction: column; align-items: center; gap: 5px;
     }
-    .generate-btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 7px 0 #D49B9F, 0 8px 15px rgba(0,0,0,0.08);
-    }
-    .generate-btn:active {
-      transform: translateY(2px);
-      box-shadow: 0 3px 0 #D49B9F, 0 4px 8px rgba(0,0,0,0.05);
-    }
+    .ratio-icon { border: 1.5px solid rgba(0,0,0,0.2); border-radius: 3px; transition: border-color 0.15s; }
+    .ratio-name { font-size: 11px; font-weight: 500; color: var(--text-secondary); transition: color 0.15s; }
+    .ratio.active { background: #fff; border-color: var(--border-strong); }
+    .ratio.active .ratio-icon { border-color: var(--text-primary); }
+    .ratio.active .ratio-name { color: var(--text-primary); }
 
-    .result-area {
-      margin-top: 1rem;
-      position: relative;
+    .gen-btn {
+      width: 100%; background: var(--text-primary); color: #fff;
+      border: none; border-radius: var(--radius-md); padding: 13px;
+      font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500;
+      cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;
+      margin-top: 1.25rem; transition: opacity 0.15s, transform 0.1s; letter-spacing: 0.01em;
     }
-    .result-area img {
-      max-width: 100%;
-      border-radius: 24px 8px 24px 8px;
-      border: 3px dashed #B2C9AB;
-      margin-bottom: 0.7rem;
-    }
-    .expiry-tag {
-      background: #F9F6F0;
-      display: inline-block;
-      padding: 0.3rem 1rem;
-      border-radius: 20px;
-      font-size: 0.8rem;
-      color: #7A8B6F;
-      border: 1px dashed #B2C9AB;
-    }
+    .gen-btn:hover { opacity: 0.82; }
+    .gen-btn:active { transform: scale(0.99); opacity: 0.7; }
+    .gen-btn:disabled { opacity: 0.35; cursor: default; transform: none; }
 
-    .loading-text {
-      color: #5A7D5C;
-      margin: 1.2rem 0;
-      font-size: 1.1rem;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 0.3rem;
+    .status {
+      display: none; align-items: center; gap: 10px;
+      padding: 12px 14px; background: #f7f7f5; border-radius: 10px; margin-top: 1rem;
     }
-    .spinner {
-      width: 1.4rem;
-      height: 1.4rem;
-      border: 3px solid #D4E2D0;
-      border-top: 3px solid #E8B4B8;
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
+    .status.show { display: flex; }
+    .track { flex: 1; height: 2px; background: rgba(0,0,0,0.1); border-radius: 99px; overflow: hidden; }
+    .bar {
+      height: 100%; width: 0%; background: var(--text-primary);
+      border-radius: 99px; animation: sweep 2s ease-in-out infinite;
     }
-    @keyframes spin { to { transform: rotate(360deg); } }
+    @keyframes sweep {
+      0%   { width: 0%; margin-left: 0 }
+      55%  { width: 55% }
+      85%  { width: 90% }
+      100% { width: 0%; margin-left: 100% }
+    }
+    .status-text { font-size: 12px; color: var(--text-secondary); white-space: nowrap; }
 
-    .error-msg {
-      color: #C97A7A;
-      margin: 1rem 0;
+    .err {
+      display: none; font-size: 13px; color: var(--danger-text);
+      background: var(--danger-bg); border-radius: 10px;
+      padding: 11px 14px; margin-top: 1rem;
     }
+    .err.show { display: block; }
+
+    .result { display: none; }
+    .result.show { display: block; }
+    .sep { border: none; border-top: 0.5px solid var(--border); margin: 1.5rem 0; }
+    .result-img { width: 100%; display: block; border-radius: 14px; border: 0.5px solid var(--border); }
+    .img-meta { display: flex; align-items: center; justify-content: space-between; margin-top: 10px; }
+    .expire { font-size: 12px; color: var(--text-tertiary); }
+    .save-btn {
+      background: #f7f7f5; border: 0.5px solid var(--border); border-radius: 8px;
+      padding: 6px 12px; font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 500;
+      color: var(--text-secondary); cursor: pointer; display: flex; align-items: center; gap: 5px;
+      transition: background 0.15s;
+    }
+    .save-btn:hover { background: #efefec; }
+
+    @keyframes fade-up { from { opacity: 0; transform: translateY(3px); } to { opacity: 1; transform: translateY(0); } }
+    textarea.refreshed { animation: fade-up 0.28s ease; }
   </style>
 </head>
 <body>
-  <div class="card">
-    <h1>
-      <span>🔮</span> flux·memes <span>✨</span>
-    </h1>
-    <div class="sub">manifest ur wildest image, bestie</div>
+  <div class="shell">
 
-    <!-- Prompt -->
-    <textarea id="prompt" rows="3" placeholder="e.g. a capybara wearing sunglasses vibing in a retro diner, anime style, no cap">spiderman, batman, and spongebob hanging out in a luxury car, photorealistic 8k</textarea>
-
-    <!-- Aspect ratio selector -->
-    <div class="ratio-group" id="ratioGroup">
-      <span class="ratio-btn active" data-ratio="1:1">1:1 📸</span>
-      <span class="ratio-btn" data-ratio="16:9">16:9 📺</span>
-      <span class="ratio-btn" data-ratio="9:16">9:16 📱</span>
-      <span class="ratio-btn" data-ratio="4:3">4:3 🖼</span>
+    <div class="header">
+      <div class="wordmark">
+        <div class="logo">
+          <svg viewBox="0 0 24 24"><path d="M15 4.5l-3-1.5-3 1.5v3L6 9l-1.5 3L6 15l3 1.5v3l3 1.5 3-1.5v-3L18 15l1.5-3L18 9l-3-1.5v-3z"/><circle cx="12" cy="12" r="2.5"/></svg>
+        </div>
+        <span class="brand">Conjure</span>
+      </div>
+      <p class="tagline">Describe anything. Watch it appear.</p>
     </div>
 
-    <button class="generate-btn" id="generateBtn">
-      <span>manifest image 🔮</span>
-    </button>
+    <div class="card">
+      <label class="field-label" for="prompt">Your prompt</label>
+      <div class="textarea-wrap">
+        <textarea id="prompt" rows="3"></textarea>
+        <div class="toolbar">
+          <span class="charcount" id="charcount">0 characters</span>
+          <button class="shuffle-btn" id="shuffle">
+            <span class="spin">↻</span> Inspire me
+          </button>
+        </div>
+      </div>
 
-    <div id="resultContainer"></div>
+      <div class="ratio-section">
+        <label class="field-label">Aspect ratio</label>
+        <div class="ratios">
+          <div class="ratio active" data-r="1:1">
+            <div class="ratio-icon" style="width:28px;height:28px"></div>
+            <span class="ratio-name">1 : 1</span>
+          </div>
+          <div class="ratio" data-r="16:9">
+            <div class="ratio-icon" style="width:36px;height:21px"></div>
+            <span class="ratio-name">16 : 9</span>
+          </div>
+          <div class="ratio" data-r="9:16">
+            <div class="ratio-icon" style="width:18px;height:32px"></div>
+            <span class="ratio-name">9 : 16</span>
+          </div>
+          <div class="ratio" data-r="4:3">
+            <div class="ratio-icon" style="width:32px;height:24px"></div>
+            <span class="ratio-name">4 : 3</span>
+          </div>
+        </div>
+      </div>
+
+      <button class="gen-btn" id="genBtn">
+        ✦ Conjure image
+      </button>
+
+      <div class="status" id="statusEl">
+        <div class="track"><div class="bar"></div></div>
+        <span class="status-text" id="statusText">Generating...</span>
+      </div>
+
+      <div class="err" id="errEl"></div>
+
+      <div class="result" id="resultEl">
+        <hr class="sep">
+        <img class="result-img" id="resultImg" src="" alt="Generated image">
+        <div class="img-meta">
+          <span class="expire">⏱ Expires in ~4 min — save it</span>
+          <button class="save-btn" id="saveBtn">↓ Save</button>
+        </div>
+      </div>
+    </div>
+
   </div>
 
   <script>
-    const API_BASE = 'https://viscodev.x10.mx/Flux-MAX/api.php';
-    const promptInput = document.getElementById('prompt');
-    const generateBtn = document.getElementById('generateBtn');
-    const resultContainer = document.getElementById('resultContainer');
-    const ratioButtons = document.querySelectorAll('.ratio-btn');
-
-    let selectedRatio = '1:1';
-
-    // Ratio selector logic
-    ratioButtons.forEach(btn => {
-      btn.addEventListener('click', () => {
-        ratioButtons.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        selectedRatio = btn.dataset.ratio;
-      });
-    });
-
-    // Gen Z loading messages
-    const loadingMessages = [
-      "cooking... 💅✨", "manifesting pixels... 🔮", "aesthetic loading... 🌿",
-      "summoning the vibe... 🧘", "slay, wait a sec... 😌", "midjourney who? brb... 👀"
+    const PROMPTS = [
+      "A Tokyo ramen shop at 2am, rain on the windows, one lonely chef stirring the broth, neon reflections, cinematic",
+      "An astronaut floating in deep space reading a dog-eared paperback novel, planets behind them, warm light",
+      "A grand library built inside a hollowed-out redwood tree, spiral staircases, dust particles in sunbeams",
+      "A black cat sitting on a vintage motorcycle in front of a neon-lit diner, night, low angle, film noir",
+      "Underwater city ruins overgrown with coral and sea life, shafts of light from above, hyper-detailed",
+      "A samurai meditating on a rooftop at sunrise, Tokyo skyline, mist, cherry blossoms falling, 8k",
+      "A cozy witch's cottage in an enchanted forest, warm candlelight, herbs drying, rain outside, oil painting",
+      "Two old friends playing chess in Central Park, golden autumn light, bokeh, street photography style",
+      "A child in a raincoat jumping in puddles, vivid reflections of a rainbow city, overhead drone shot",
+      "A futuristic farmer tending bioluminescent crops on a space station, stars through the glass dome",
+      "Wolves running through a snow-covered pine forest at dusk, Northern Lights overhead, National Geographic",
+      "An abandoned amusement park overtaken by jungle, mystical fog, golden hour, DSLR photography",
+      "A tiny dragon curled up asleep on a pile of books beside a fireplace, cozy fantasy illustration",
+      "A street market in Marrakech at dusk, spices, lanterns, long shadows, rich warm color palette",
+      "A lighthouse keeper watching a massive storm roll in from the sea, dramatic clouds, oil on canvas",
+      "Retro 1960s NASA control room but the screens show TikTok, cinematic wide shot, hyper-realistic",
+      "A polar bear reading a newspaper on a melting ice floe, deadpan humor, documentary style",
+      "Giant koi fish swimming through a flooded ancient Japanese temple, magical realism, soft light",
+      "A lone train crossing an impossible bridge over clouds, Studio Ghibli aesthetic, painterly",
+      "Neon-drenched Hong Kong alleyway at midnight, rain, reflections, blade runner mood, 35mm film grain",
+      "An elegant dinner party hosted inside a submarine, vintage decor, guests dressed in 1920s attire",
+      "A wolf wearing a three-piece suit at a coffee shop, candidly photographed, ultra-realistic",
+      "Enormous ancient stone heads overgrown with moss in a misty rainforest, golden afternoon light",
+      "A jazz musician playing saxophone on a rooftop in New Orleans, full moon, fireflies, long exposure",
+      "The interior of a colossal clock tower, gears the size of houses, tiny silhouette of a person inside",
+      "A sleepy village perched on the back of a giant tortoise crossing a desert, magical realism, wide angle",
+      "An old bookshop cat napping on a stack of rare first editions, warm afternoon light, cozy tones",
+      "A deep-sea explorer discovering a glowing ancient civilization at the bottom of the ocean",
+      "Cherry blossom petals falling on a crowded Tokyo crossing, slow shutter, pastel palette",
+      "A street artist painting a mural that comes to life at night, long exposure, surreal and vivid",
     ];
 
-    generateBtn.addEventListener('click', async () => {
-      const prompt = promptInput.value.trim();
-      if (!prompt) {
-        resultContainer.innerHTML = '<div class="error-msg">👀 bestie u gotta type something first</div>';
-        return;
-      }
+    let used = [], lastIdx = -1;
 
-      // Show loading
-      const randomMsg = loadingMessages[Math.floor(Math.random() * loadingMessages.length)];
-      resultContainer.innerHTML = `
-        <div class="loading-text">
-          <div class="spinner"></div> ${randomMsg}
-        </div>
-      `;
+    function nextPrompt() {
+      if (used.length >= PROMPTS.length) used = [];
+      let i;
+      do { i = Math.floor(Math.random() * PROMPTS.length); }
+      while (used.includes(i) || i === lastIdx);
+      used.push(i); lastIdx = i;
+      return PROMPTS[i];
+    }
 
-      const url = `${API_BASE}?prompt=${encodeURIComponent(prompt)}&aspect_ratio=${selectedRatio}`;
+    const promptEl = document.getElementById('prompt');
+    const charcountEl = document.getElementById('charcount');
+
+    function setPrompt(t) {
+      promptEl.value = t;
+      promptEl.classList.remove('refreshed');
+      void promptEl.offsetWidth;
+      promptEl.classList.add('refreshed');
+      updateCount();
+    }
+    function updateCount() {
+      const n = promptEl.value.length;
+      charcountEl.textContent = n + ' character' + (n === 1 ? '' : 's');
+    }
+
+    setPrompt(nextPrompt());
+    promptEl.addEventListener('input', updateCount);
+    document.getElementById('shuffle').addEventListener('click', () => setPrompt(nextPrompt()));
+
+    let ratio = '1:1';
+    document.querySelectorAll('.ratio').forEach(b => b.addEventListener('click', () => {
+      document.querySelectorAll('.ratio').forEach(x => x.classList.remove('active'));
+      b.classList.add('active'); ratio = b.dataset.r;
+    }));
+
+    const genBtn = document.getElementById('genBtn');
+    const statusEl = document.getElementById('statusEl');
+    const statusText = document.getElementById('statusText');
+    const errEl = document.getElementById('errEl');
+    const resultEl = document.getElementById('resultEl');
+    const resultImg = document.getElementById('resultImg');
+
+    const genMsgs = [
+      'Painting your scene...','Summoning pixels...','Mixing light and shadow...',
+      'Weaving the image...','Rendering details...','Almost ready...'
+    ];
+
+    genBtn.addEventListener('click', async () => {
+      const prompt = promptEl.value.trim();
+      errEl.className = 'err'; resultEl.className = 'result';
+      if (!prompt) { errEl.textContent = 'Please enter a prompt to get started.'; errEl.className = 'err show'; return; }
+
+      genBtn.disabled = true;
+      statusText.textContent = genMsgs[Math.floor(Math.random() * genMsgs.length)];
+      statusEl.className = 'status show';
 
       try {
-        const response = await fetch(url);
-        const data = await response.json();
+        const res = await fetch(`https://viscodev.x10.mx/Flux-MAX/api.php?prompt=${encodeURIComponent(prompt)}&aspect_ratio=${ratio}`);
+        const data = await res.json();
+        statusEl.className = 'status'; genBtn.disabled = false;
 
         if (data.success) {
-          const imgUrl = data.image_url;
-          const expires = data.expires_in || '4 minutes';
-          // Random compliment after success
-          const compliments = [
-            "ur mind >> 🧠✨", "ate that prompt fr 🍽", "no crumbs left 💅",
-            "this goes hard 🔥", "iconic behavior 🏆"
-          ];
-          const randomComp = compliments[Math.floor(Math.random() * compliments.length)];
-
-          resultContainer.innerHTML = `
-            <div class="result-area">
-              <img src="${imgUrl}" alt="Generated image" onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\\'error-msg\\'>image said ✌️ (maybe expired)</div>';">
-              <div class="expiry-tag">⏳ expires in ~${expires} – screenshot bestie!</div>
-              <div style="margin-top:0.4rem;color:#7A8B6F;">${randomComp}</div>
-            </div>
-          `;
+          resultImg.src = data.image_url;
+          resultImg.onerror = () => {
+            resultEl.className = 'result';
+            errEl.textContent = 'Image expired or could not load. Try generating again.';
+            errEl.className = 'err show';
+          };
+          resultEl.className = 'result show';
+          setTimeout(() => setPrompt(nextPrompt()), 800);
         } else {
-          resultContainer.innerHTML = '<div class="error-msg">❌ vibe check failed: API said no</div>';
+          errEl.textContent = 'Generation failed. Please try again.'; errEl.className = 'err show';
         }
-      } catch (err) {
-        resultContainer.innerHTML = '<div class="error-msg">💀 no cap, something went wrong. try again?</div>';
-        console.error(err);
+      } catch(e) {
+        statusEl.className = 'status'; genBtn.disabled = false;
+        errEl.textContent = 'Something went wrong. Check your connection and try again.';
+        errEl.className = 'err show';
       }
+    });
+
+    document.getElementById('saveBtn').addEventListener('click', () => {
+      const a = document.createElement('a');
+      a.href = resultImg.src; a.download = 'conjure.jpg'; a.target = '_blank'; a.click();
     });
   </script>
 </body>
