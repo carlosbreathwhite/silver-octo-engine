@@ -216,9 +216,8 @@
 </div>
 
 <script>
-  // ─── REPLACE THIS after you deploy to Vercel ───────────────────────────────
-  const NANO_PROXY = 'https://YOUR-PROJECT-NAME.vercel.app/api/generate';
-  // ──────────────────────────────────────────────────────────────────────────
+  // ✅ THE ONLY LINE I CHANGED — now points to your serverless proxy
+  const NANO_PROXY = '/api/generate';
 
   const PROMPTS = [
     "A Tokyo ramen shop at 2am, rain on the windows, one lonely chef stirring the broth, neon reflections, cinematic",
