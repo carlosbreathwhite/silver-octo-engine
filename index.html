@@ -20,6 +20,7 @@
       --text-tertiary: #999999;
       --danger-bg: #fff0f0;
       --danger-text: #c0392b;
+      --accent: #111111;
       --radius-md: 12px;
       --radius-lg: 20px;
     }
@@ -33,9 +34,10 @@
       color: var(--text-primary);
     }
 
-    .shell { width: 100%; max-width: 480px; }
+    .shell { width: 100%; max-width: 500px; }
 
-    .header { text-align: center; margin-bottom: 2.2rem; }
+    /* Header */
+    .header { text-align: center; margin-bottom: 2rem; }
     .wordmark { display: inline-flex; align-items: center; gap: 10px; margin-bottom: 0.6rem; }
     .logo {
       width: 36px; height: 36px; background: var(--text-primary);
@@ -45,6 +47,7 @@
     .brand { font-size: 22px; font-weight: 500; letter-spacing: -0.4px; }
     .tagline { font-size: 13px; color: var(--text-tertiary); }
 
+    /* Card */
     .card {
       background: var(--surface);
       border: 0.5px solid var(--border);
@@ -52,12 +55,40 @@
       padding: 1.75rem 1.5rem;
     }
 
+    /* Engine selector */
+    .engine-row { display: flex; gap: 8px; margin-bottom: 1.4rem; }
+    .engine-btn {
+      flex: 1; background: #f7f7f5;
+      border: 0.5px solid var(--border); border-radius: 10px;
+      padding: 10px 12px; cursor: pointer; transition: all 0.15s;
+      display: flex; flex-direction: column; align-items: flex-start; gap: 2px;
+      font-family: 'DM Sans', sans-serif; text-align: left;
+    }
+    .engine-btn:hover { border-color: var(--border-strong); }
+    .engine-btn.active {
+      background: var(--text-primary); border-color: var(--text-primary);
+    }
+    .engine-name {
+      font-size: 13px; font-weight: 500; color: var(--text-secondary);
+      transition: color 0.15s;
+    }
+    .engine-btn.active .engine-name { color: #fff; }
+    .engine-tag {
+      font-size: 10px; color: var(--text-tertiary); letter-spacing: 0.04em;
+      transition: color 0.15s;
+    }
+    .engine-btn.active .engine-tag { color: rgba(255,255,255,0.55); }
+
+    .section-divider { border: none; border-top: 0.5px solid var(--border); margin: 1.25rem 0; }
+
+    /* Field label */
     .field-label {
       font-size: 11px; font-weight: 500; letter-spacing: 0.08em;
       text-transform: uppercase; color: var(--text-tertiary);
       margin-bottom: 8px; display: block;
     }
 
+    /* Textarea */
     .textarea-wrap { position: relative; }
     textarea {
       width: 100%; background: #f7f7f5;
@@ -87,61 +118,84 @@
     .spin { display: inline-block; transition: transform 0.35s; }
     .shuffle-btn:hover .spin { transform: rotate(180deg); }
 
-    .ratio-section { margin: 1.25rem 0; }
-    .ratios { display: flex; gap: 8px; }
-    .ratio {
-      flex: 1; background: #f7f7f5; border: 0.5px solid var(--border);
-      border-radius: 10px; padding: 10px 6px 8px; cursor: pointer;
-      transition: all 0.15s; display: flex; flex-direction: column; align-items: center; gap: 5px;
+    /* Image edit input (NanoBanana only) */
+    .edit-section { margin-top: 1rem; display: none; }
+    .edit-section.visible { display: block; }
+    .edit-input {
+      width: 100%; background: #f7f7f5;
+      border: 0.5px solid var(--border); border-radius: var(--radius-md);
+      padding: 10px 14px; font-family: 'DM Sans', sans-serif;
+      font-size: 13px; color: var(--text-primary); outline: none;
+      transition: border-color 0.15s;
     }
-    .ratio-icon { border: 1.5px solid rgba(0,0,0,0.2); border-radius: 3px; transition: border-color 0.15s; }
-    .ratio-name { font-size: 11px; font-weight: 500; color: var(--text-secondary); transition: color 0.15s; }
+    .edit-input::placeholder { color: var(--text-tertiary); }
+    .edit-input:focus { border-color: var(--border-strong); background: #fff; }
+    .edit-hint { font-size: 11px; color: var(--text-tertiary); margin-top: 5px; }
+
+    /* Ratio + Resolution row */
+    .controls-row { display: flex; gap: 10px; margin: 1.2rem 0; align-items: flex-start; }
+    .controls-col { flex: 1; }
+
+    .ratios { display: flex; gap: 6px; flex-wrap: wrap; }
+    .ratio {
+      background: #f7f7f5; border: 0.5px solid var(--border);
+      border-radius: 8px; padding: 7px 5px 6px; cursor: pointer;
+      transition: all 0.15s; display: flex; flex-direction: column; align-items: center; gap: 4px;
+      min-width: 48px;
+    }
+    .ratio-icon { border: 1.5px solid rgba(0,0,0,0.2); border-radius: 2px; transition: border-color 0.15s; }
+    .ratio-name { font-size: 10px; font-weight: 500; color: var(--text-secondary); transition: color 0.15s; white-space: nowrap; }
     .ratio.active { background: #fff; border-color: var(--border-strong); }
     .ratio.active .ratio-icon { border-color: var(--text-primary); }
     .ratio.active .ratio-name { color: var(--text-primary); }
 
+    /* Resolution (NanoBanana only) */
+    .res-group { display: flex; gap: 6px; }
+    .res-btn {
+      flex: 1; background: #f7f7f5; border: 0.5px solid var(--border);
+      border-radius: 8px; padding: 8px 4px; font-family: 'DM Sans', sans-serif;
+      font-size: 12px; font-weight: 500; color: var(--text-secondary);
+      cursor: pointer; transition: all 0.15s; text-align: center;
+    }
+    .res-btn:hover { border-color: var(--border-strong); }
+    .res-btn.active { background: #fff; border-color: var(--border-strong); color: var(--text-primary); }
+
+    /* Generate button */
     .gen-btn {
       width: 100%; background: var(--text-primary); color: #fff;
       border: none; border-radius: var(--radius-md); padding: 13px;
       font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500;
       cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;
-      margin-top: 1.25rem; transition: opacity 0.15s, transform 0.1s; letter-spacing: 0.01em;
+      margin-top: 1.25rem; transition: opacity 0.15s, transform 0.1s;
     }
     .gen-btn:hover { opacity: 0.82; }
     .gen-btn:active { transform: scale(0.99); opacity: 0.7; }
     .gen-btn:disabled { opacity: 0.35; cursor: default; transform: none; }
 
+    /* Status */
     .status {
       display: none; align-items: center; gap: 10px;
       padding: 12px 14px; background: #f7f7f5; border-radius: 10px; margin-top: 1rem;
     }
     .status.show { display: flex; }
     .track { flex: 1; height: 2px; background: rgba(0,0,0,0.1); border-radius: 99px; overflow: hidden; }
-    .bar {
-      height: 100%; width: 0%; background: var(--text-primary);
-      border-radius: 99px; animation: sweep 2s ease-in-out infinite;
-    }
-    @keyframes sweep {
-      0%   { width: 0%; margin-left: 0 }
-      55%  { width: 55% }
-      85%  { width: 90% }
-      100% { width: 0%; margin-left: 100% }
-    }
+    .bar { height: 100%; width: 0%; background: var(--text-primary); border-radius: 99px; animation: sweep 2s ease-in-out infinite; }
+    @keyframes sweep { 0%{width:0%;margin-left:0} 55%{width:55%} 85%{width:90%} 100%{width:0%;margin-left:100%} }
     .status-text { font-size: 12px; color: var(--text-secondary); white-space: nowrap; }
 
-    .err {
-      display: none; font-size: 13px; color: var(--danger-text);
-      background: var(--danger-bg); border-radius: 10px;
-      padding: 11px 14px; margin-top: 1rem;
-    }
+    /* Error */
+    .err { display: none; font-size: 13px; color: var(--danger-text); background: var(--danger-bg); border-radius: 10px; padding: 11px 14px; margin-top: 1rem; }
     .err.show { display: block; }
 
+    /* Result */
     .result { display: none; }
     .result.show { display: block; }
     .sep { border: none; border-top: 0.5px solid var(--border); margin: 1.5rem 0; }
     .result-img { width: 100%; display: block; border-radius: 14px; border: 0.5px solid var(--border); }
     .img-meta { display: flex; align-items: center; justify-content: space-between; margin-top: 10px; }
+    .img-meta-left { display: flex; flex-direction: column; gap: 2px; }
     .expire { font-size: 12px; color: var(--text-tertiary); }
+    .engine-badge { font-size: 11px; color: var(--text-tertiary); }
     .save-btn {
       background: #f7f7f5; border: 0.5px solid var(--border); border-radius: 8px;
       padding: 6px 12px; font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 500;
@@ -155,194 +209,281 @@
   </style>
 </head>
 <body>
-  <div class="shell">
+<div class="shell">
 
-    <div class="header">
-      <div class="wordmark">
-        <div class="logo">
-          <svg viewBox="0 0 24 24"><path d="M15 4.5l-3-1.5-3 1.5v3L6 9l-1.5 3L6 15l3 1.5v3l3 1.5 3-1.5v-3L18 15l1.5-3L18 9l-3-1.5v-3z"/><circle cx="12" cy="12" r="2.5"/></svg>
-        </div>
-        <span class="brand">Conjure</span>
+  <div class="header">
+    <div class="wordmark">
+      <div class="logo">
+        <svg viewBox="0 0 24 24"><path d="M15 4.5l-3-1.5-3 1.5v3L6 9l-1.5 3L6 15l3 1.5v3l3 1.5 3-1.5v-3L18 15l1.5-3L18 9l-3-1.5v-3z"/><circle cx="12" cy="12" r="2.5"/></svg>
       </div>
-      <p class="tagline">Describe anything. Watch it appear.</p>
+      <span class="brand">Conjure</span>
+    </div>
+    <p class="tagline">Describe anything. Watch it appear.</p>
+  </div>
+
+  <div class="card">
+
+    <!-- Engine selector -->
+    <label class="field-label">Engine</label>
+    <div class="engine-row">
+      <button class="engine-btn" id="eng-flux" data-engine="flux">
+        <span class="engine-name">Flux MAX</span>
+        <span class="engine-tag">Fast · Text to image</span>
+      </button>
+      <button class="engine-btn active" id="eng-nano" data-engine="nano">
+        <span class="engine-name">NanoBanana</span>
+        <span class="engine-tag">4K · Edit · Multi-image</span>
+      </button>
     </div>
 
-    <div class="card">
-      <label class="field-label" for="prompt">Your prompt</label>
-      <div class="textarea-wrap">
-        <textarea id="prompt" rows="3"></textarea>
-        <div class="toolbar">
-          <span class="charcount" id="charcount">0 characters</span>
-          <button class="shuffle-btn" id="shuffle">
-            <span class="spin">↻</span> Inspire me
-          </button>
+    <hr class="section-divider">
+
+    <!-- Prompt -->
+    <label class="field-label" for="prompt">Prompt</label>
+    <div class="textarea-wrap">
+      <textarea id="prompt" rows="3"></textarea>
+      <div class="toolbar">
+        <span class="charcount" id="charcount">0 characters</span>
+        <button class="shuffle-btn" id="shuffle"><span class="spin">↻</span> Inspire me</button>
+      </div>
+    </div>
+
+    <!-- Image editing (NanoBanana only) -->
+    <div class="edit-section visible" id="editSection">
+      <label class="field-label" style="margin-top:1rem;">Image URL to edit <span style="font-size:10px;text-transform:none;letter-spacing:0;color:var(--text-tertiary);font-weight:400;">(optional)</span></label>
+      <input class="edit-input" id="editUrl" type="url" placeholder="https://i.imgur.com/your-image.jpg — leave blank for text-to-image">
+      <p class="edit-hint">Paste an image URL to edit it, or leave blank to generate from scratch</p>
+    </div>
+
+    <!-- Controls row -->
+    <div class="controls-row">
+      <!-- Aspect ratio -->
+      <div class="controls-col">
+        <label class="field-label">Ratio</label>
+        <div class="ratios" id="ratios">
+          <div class="ratio active" data-r="1:1"><div class="ratio-icon" style="width:22px;height:22px"></div><span class="ratio-name">1:1</span></div>
+          <div class="ratio" data-r="16:9"><div class="ratio-icon" style="width:30px;height:17px"></div><span class="ratio-name">16:9</span></div>
+          <div class="ratio" data-r="9:16"><div class="ratio-icon" style="width:15px;height:27px"></div><span class="ratio-name">9:16</span></div>
+          <div class="ratio" data-r="4:3"><div class="ratio-icon" style="width:26px;height:20px"></div><span class="ratio-name">4:3</span></div>
+          <div class="ratio nano-only" data-r="3:4"><div class="ratio-icon" style="width:18px;height:24px"></div><span class="ratio-name">3:4</span></div>
         </div>
       </div>
 
-      <div class="ratio-section">
-        <label class="field-label">Aspect ratio</label>
-        <div class="ratios">
-          <div class="ratio active" data-r="1:1">
-            <div class="ratio-icon" style="width:28px;height:28px"></div>
-            <span class="ratio-name">1 : 1</span>
-          </div>
-          <div class="ratio" data-r="16:9">
-            <div class="ratio-icon" style="width:36px;height:21px"></div>
-            <span class="ratio-name">16 : 9</span>
-          </div>
-          <div class="ratio" data-r="9:16">
-            <div class="ratio-icon" style="width:18px;height:32px"></div>
-            <span class="ratio-name">9 : 16</span>
-          </div>
-          <div class="ratio" data-r="4:3">
-            <div class="ratio-icon" style="width:32px;height:24px"></div>
-            <span class="ratio-name">4 : 3</span>
-          </div>
+      <!-- Resolution (NanoBanana only) -->
+      <div class="controls-col nano-only" id="resCol">
+        <label class="field-label">Resolution</label>
+        <div class="res-group">
+          <button class="res-btn" data-res="1K">1K</button>
+          <button class="res-btn active" data-res="2K">2K</button>
+          <button class="res-btn" data-res="4K">4K</button>
         </div>
       </div>
+    </div>
 
-      <button class="gen-btn" id="genBtn">
-        ✦ Conjure image
-      </button>
+    <button class="gen-btn" id="genBtn">✦ Conjure image</button>
 
-      <div class="status" id="statusEl">
-        <div class="track"><div class="bar"></div></div>
-        <span class="status-text" id="statusText">Generating...</span>
-      </div>
+    <div class="status" id="statusEl">
+      <div class="track"><div class="bar"></div></div>
+      <span class="status-text" id="statusText">Generating...</span>
+    </div>
 
-      <div class="err" id="errEl"></div>
+    <div class="err" id="errEl"></div>
 
-      <div class="result" id="resultEl">
-        <hr class="sep">
-        <img class="result-img" id="resultImg" src="" alt="Generated image">
-        <div class="img-meta">
-          <span class="expire">⏱ Expires in ~4 min — save it</span>
-          <button class="save-btn" id="saveBtn">↓ Save</button>
+    <div class="result" id="resultEl">
+      <hr class="sep">
+      <img class="result-img" id="resultImg" src="" alt="Generated image">
+      <div class="img-meta">
+        <div class="img-meta-left">
+          <span class="expire">⏱ Temporary — save before it expires</span>
+          <span class="engine-badge" id="engineBadge"></span>
         </div>
+        <button class="save-btn" id="saveBtn">↓ Save</button>
       </div>
     </div>
 
   </div>
+</div>
 
-  <script>
-    const PROMPTS = [
-      "A Tokyo ramen shop at 2am, rain on the windows, one lonely chef stirring the broth, neon reflections, cinematic",
-      "An astronaut floating in deep space reading a dog-eared paperback novel, planets behind them, warm light",
-      "A grand library built inside a hollowed-out redwood tree, spiral staircases, dust particles in sunbeams",
-      "A black cat sitting on a vintage motorcycle in front of a neon-lit diner, night, low angle, film noir",
-      "Underwater city ruins overgrown with coral and sea life, shafts of light from above, hyper-detailed",
-      "A samurai meditating on a rooftop at sunrise, Tokyo skyline, mist, cherry blossoms falling, 8k",
-      "A cozy witch's cottage in an enchanted forest, warm candlelight, herbs drying, rain outside, oil painting",
-      "Two old friends playing chess in Central Park, golden autumn light, bokeh, street photography style",
-      "A child in a raincoat jumping in puddles, vivid reflections of a rainbow city, overhead drone shot",
-      "A futuristic farmer tending bioluminescent crops on a space station, stars through the glass dome",
-      "Wolves running through a snow-covered pine forest at dusk, Northern Lights overhead, National Geographic",
-      "An abandoned amusement park overtaken by jungle, mystical fog, golden hour, DSLR photography",
-      "A tiny dragon curled up asleep on a pile of books beside a fireplace, cozy fantasy illustration",
-      "A street market in Marrakech at dusk, spices, lanterns, long shadows, rich warm color palette",
-      "A lighthouse keeper watching a massive storm roll in from the sea, dramatic clouds, oil on canvas",
-      "Retro 1960s NASA control room but the screens show TikTok, cinematic wide shot, hyper-realistic",
-      "A polar bear reading a newspaper on a melting ice floe, deadpan humor, documentary style",
-      "Giant koi fish swimming through a flooded ancient Japanese temple, magical realism, soft light",
-      "A lone train crossing an impossible bridge over clouds, Studio Ghibli aesthetic, painterly",
-      "Neon-drenched Hong Kong alleyway at midnight, rain, reflections, blade runner mood, 35mm film grain",
-      "An elegant dinner party hosted inside a submarine, vintage decor, guests dressed in 1920s attire",
-      "A wolf wearing a three-piece suit at a coffee shop, candidly photographed, ultra-realistic",
-      "Enormous ancient stone heads overgrown with moss in a misty rainforest, golden afternoon light",
-      "A jazz musician playing saxophone on a rooftop in New Orleans, full moon, fireflies, long exposure",
-      "The interior of a colossal clock tower, gears the size of houses, tiny silhouette of a person inside",
-      "A sleepy village perched on the back of a giant tortoise crossing a desert, magical realism, wide angle",
-      "An old bookshop cat napping on a stack of rare first editions, warm afternoon light, cozy tones",
-      "A deep-sea explorer discovering a glowing ancient civilization at the bottom of the ocean",
-      "Cherry blossom petals falling on a crowded Tokyo crossing, slow shutter, pastel palette",
-      "A street artist painting a mural that comes to life at night, long exposure, surreal and vivid",
-    ];
+<script>
+  const PROMPTS = [
+    "A Tokyo ramen shop at 2am, rain on the windows, one lonely chef stirring the broth, neon reflections, cinematic",
+    "An astronaut floating in deep space reading a dog-eared paperback novel, planets behind them, warm light",
+    "A grand library built inside a hollowed-out redwood tree, spiral staircases, dust particles in sunbeams",
+    "A black cat sitting on a vintage motorcycle in front of a neon-lit diner, night, low angle, film noir",
+    "Underwater city ruins overgrown with coral and sea life, shafts of light from above, hyper-detailed",
+    "A samurai meditating on a rooftop at sunrise, Tokyo skyline, mist, cherry blossoms falling, 8k",
+    "A cozy witch's cottage in an enchanted forest, warm candlelight, herbs drying, rain outside, oil painting",
+    "Two old friends playing chess in Central Park, golden autumn light, bokeh, street photography style",
+    "A child in a raincoat jumping in puddles, vivid reflections of a rainbow city, overhead drone shot",
+    "A futuristic farmer tending bioluminescent crops on a space station, stars through the glass dome",
+    "Wolves running through a snow-covered pine forest at dusk, Northern Lights overhead, National Geographic",
+    "An abandoned amusement park overtaken by jungle, mystical fog, golden hour, DSLR photography",
+    "A tiny dragon curled up asleep on a pile of books beside a fireplace, cozy fantasy illustration",
+    "A street market in Marrakech at dusk, spices, lanterns, long shadows, rich warm color palette",
+    "A lighthouse keeper watching a massive storm roll in from the sea, dramatic clouds, oil on canvas",
+    "Retro 1960s NASA control room but the screens show TikTok, cinematic wide shot, hyper-realistic",
+    "A polar bear reading a newspaper on a melting ice floe, deadpan humor, documentary style",
+    "Giant koi fish swimming through a flooded ancient Japanese temple, magical realism, soft light",
+    "A lone train crossing an impossible bridge over clouds, Studio Ghibli aesthetic, painterly",
+    "Neon-drenched Hong Kong alleyway at midnight, rain, reflections, blade runner mood, 35mm film grain",
+    "An elegant dinner party hosted inside a submarine, vintage decor, guests dressed in 1920s attire",
+    "A wolf wearing a three-piece suit at a coffee shop, candidly photographed, ultra-realistic",
+    "Enormous ancient stone heads overgrown with moss in a misty rainforest, golden afternoon light",
+    "A jazz musician playing saxophone on a rooftop in New Orleans, full moon, fireflies, long exposure",
+    "The interior of a colossal clock tower, gears the size of houses, tiny silhouette of a person inside",
+    "A sleepy village perched on the back of a giant tortoise crossing a desert, magical realism, wide angle",
+    "An old bookshop cat napping on a stack of rare first editions, warm afternoon light, cozy tones",
+    "A deep-sea explorer discovering a glowing ancient civilization at the bottom of the ocean",
+    "Cherry blossom petals falling on a crowded Tokyo crossing, slow shutter, pastel palette",
+    "A street artist painting a mural that comes to life at night, long exposure, surreal and vivid",
+  ];
 
-    let used = [], lastIdx = -1;
+  let used = [], lastIdx = -1;
+  function nextPrompt() {
+    if (used.length >= PROMPTS.length) used = [];
+    let i;
+    do { i = Math.floor(Math.random() * PROMPTS.length); } while (used.includes(i) || i === lastIdx);
+    used.push(i); lastIdx = i;
+    return PROMPTS[i];
+  }
 
-    function nextPrompt() {
-      if (used.length >= PROMPTS.length) used = [];
-      let i;
-      do { i = Math.floor(Math.random() * PROMPTS.length); }
-      while (used.includes(i) || i === lastIdx);
-      used.push(i); lastIdx = i;
-      return PROMPTS[i];
+  const promptEl = document.getElementById('prompt');
+  const charcountEl = document.getElementById('charcount');
+  function setPrompt(t) {
+    promptEl.value = t;
+    promptEl.classList.remove('refreshed');
+    void promptEl.offsetWidth;
+    promptEl.classList.add('refreshed');
+    updateCount();
+  }
+  function updateCount() {
+    const n = promptEl.value.length;
+    charcountEl.textContent = n + ' character' + (n === 1 ? '' : 's');
+  }
+  setPrompt(nextPrompt());
+  promptEl.addEventListener('input', updateCount);
+  document.getElementById('shuffle').addEventListener('click', () => setPrompt(nextPrompt()));
+
+  // Engine toggle
+  let activeEngine = 'nano';
+  document.querySelectorAll('.engine-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.engine-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      activeEngine = btn.dataset.engine;
+      const isNano = activeEngine === 'nano';
+      document.getElementById('editSection').className = 'edit-section' + (isNano ? ' visible' : '');
+      document.getElementById('resCol').style.display = isNano ? '' : 'none';
+      document.querySelectorAll('.nano-only').forEach(el => el.style.display = isNano ? '' : 'none');
+      // reset to valid ratio if 3:4 was selected and switched to flux
+      if (!isNano && activeRatio === '3:4') setRatio('1:1');
+    });
+  });
+
+  // Ratio
+  let activeRatio = '1:1';
+  function setRatio(r) {
+    activeRatio = r;
+    document.querySelectorAll('.ratio').forEach(b => {
+      b.classList.toggle('active', b.dataset.r === r);
+    });
+  }
+  document.querySelectorAll('.ratio').forEach(b => b.addEventListener('click', () => setRatio(b.dataset.r)));
+
+  // Resolution
+  let activeRes = '2K';
+  document.querySelectorAll('.res-btn').forEach(b => {
+    b.addEventListener('click', () => {
+      document.querySelectorAll('.res-btn').forEach(x => x.classList.remove('active'));
+      b.classList.add('active');
+      activeRes = b.dataset.res;
+    });
+  });
+
+  // Generate
+  const genBtn = document.getElementById('genBtn');
+  const statusEl = document.getElementById('statusEl');
+  const statusText = document.getElementById('statusText');
+  const errEl = document.getElementById('errEl');
+  const resultEl = document.getElementById('resultEl');
+  const resultImg = document.getElementById('resultImg');
+  const engineBadge = document.getElementById('engineBadge');
+
+  const genMsgs = [
+    'Painting your scene...', 'Summoning pixels...', 'Mixing light and shadow...',
+    'Weaving the image...', 'Rendering details...', 'Almost ready...'
+  ];
+
+  genBtn.addEventListener('click', async () => {
+    const prompt = promptEl.value.trim();
+    errEl.className = 'err';
+    resultEl.className = 'result';
+
+    if (!prompt) {
+      errEl.textContent = 'Please enter a prompt to get started.';
+      errEl.className = 'err show';
+      return;
     }
 
-    const promptEl = document.getElementById('prompt');
-    const charcountEl = document.getElementById('charcount');
+    genBtn.disabled = true;
+    statusText.textContent = genMsgs[Math.floor(Math.random() * genMsgs.length)];
+    statusEl.className = 'status show';
 
-    function setPrompt(t) {
-      promptEl.value = t;
-      promptEl.classList.remove('refreshed');
-      void promptEl.offsetWidth;
-      promptEl.classList.add('refreshed');
-      updateCount();
-    }
-    function updateCount() {
-      const n = promptEl.value.length;
-      charcountEl.textContent = n + ' character' + (n === 1 ? '' : 's');
-    }
+    try {
+      let imageUrl;
 
-    setPrompt(nextPrompt());
-    promptEl.addEventListener('input', updateCount);
-    document.getElementById('shuffle').addEventListener('click', () => setPrompt(nextPrompt()));
-
-    let ratio = '1:1';
-    document.querySelectorAll('.ratio').forEach(b => b.addEventListener('click', () => {
-      document.querySelectorAll('.ratio').forEach(x => x.classList.remove('active'));
-      b.classList.add('active'); ratio = b.dataset.r;
-    }));
-
-    const genBtn = document.getElementById('genBtn');
-    const statusEl = document.getElementById('statusEl');
-    const statusText = document.getElementById('statusText');
-    const errEl = document.getElementById('errEl');
-    const resultEl = document.getElementById('resultEl');
-    const resultImg = document.getElementById('resultImg');
-
-    const genMsgs = [
-      'Painting your scene...','Summoning pixels...','Mixing light and shadow...',
-      'Weaving the image...','Rendering details...','Almost ready...'
-    ];
-
-    genBtn.addEventListener('click', async () => {
-      const prompt = promptEl.value.trim();
-      errEl.className = 'err'; resultEl.className = 'result';
-      if (!prompt) { errEl.textContent = 'Please enter a prompt to get started.'; errEl.className = 'err show'; return; }
-
-      genBtn.disabled = true;
-      statusText.textContent = genMsgs[Math.floor(Math.random() * genMsgs.length)];
-      statusEl.className = 'status show';
-
-      try {
-        const res = await fetch(`https://viscodev.x10.mx/Flux-MAX/api.php?prompt=${encodeURIComponent(prompt)}&aspect_ratio=${ratio}`);
+      if (activeEngine === 'flux') {
+        // Flux MAX — GET request
+        const url = `https://viscodev.x10.mx/Flux-MAX/api.php?prompt=${encodeURIComponent(prompt)}&aspect_ratio=${activeRatio}`;
+        const res = await fetch(url);
         const data = await res.json();
-        statusEl.className = 'status'; genBtn.disabled = false;
+        if (!data.success) throw new Error(data.error || 'Generation failed');
+        imageUrl = data.image_url;
+        engineBadge.textContent = 'via Flux MAX';
 
-        if (data.success) {
-          resultImg.src = data.image_url;
-          resultImg.onerror = () => {
-            resultEl.className = 'result';
-            errEl.textContent = 'Image expired or could not load. Try generating again.';
-            errEl.className = 'err show';
-          };
-          resultEl.className = 'result show';
-          setTimeout(() => setPrompt(nextPrompt()), 800);
-        } else {
-          errEl.textContent = 'Generation failed. Please try again.'; errEl.className = 'err show';
-        }
-      } catch(e) {
-        statusEl.className = 'status'; genBtn.disabled = false;
-        errEl.textContent = 'Something went wrong. Check your connection and try again.';
-        errEl.className = 'err show';
+      } else {
+        // NanoBanana — POST form-encoded
+        const form = new URLSearchParams();
+        form.append('text', prompt);
+        form.append('ratio', activeRatio);
+        form.append('res', activeRes);
+        const editUrl = document.getElementById('editUrl').value.trim();
+        if (editUrl) form.append('links', editUrl);
+
+        const res = await fetch('https://zecora0.serv00.net/ai/NanoBanana.php', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: form.toString()
+        });
+        const data = await res.json();
+        if (!data.success) throw new Error(data.error || 'Generation failed');
+        imageUrl = data.url;
+        engineBadge.textContent = `via NanoBanana · ${data.resolution || activeRes} · ${data.mode === 'edit' ? 'Edit mode' : 'Create mode'}`;
       }
-    });
 
-    document.getElementById('saveBtn').addEventListener('click', () => {
-      const a = document.createElement('a');
-      a.href = resultImg.src; a.download = 'conjure.jpg'; a.target = '_blank'; a.click();
-    });
-  </script>
+      statusEl.className = 'status';
+      genBtn.disabled = false;
+      resultImg.src = imageUrl;
+      resultImg.onerror = () => {
+        resultEl.className = 'result';
+        errEl.textContent = 'Image expired or could not load. Try generating again.';
+        errEl.className = 'err show';
+      };
+      resultEl.className = 'result show';
+      setTimeout(() => setPrompt(nextPrompt()), 800);
+
+    } catch(e) {
+      statusEl.className = 'status';
+      genBtn.disabled = false;
+      errEl.textContent = e.message || 'Something went wrong. Check your connection and try again.';
+      errEl.className = 'err show';
+    }
+  });
+
+  document.getElementById('saveBtn').addEventListener('click', () => {
+    const a = document.createElement('a');
+    a.href = resultImg.src; a.download = 'conjure.jpg'; a.target = '_blank'; a.click();
+  });
+</script>
 </body>
 </html>
