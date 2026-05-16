@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>flux·memes 🔮 (sage mode)</title>
+  <!-- Doodle-ish font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Pangolin&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background-color: #F9F6F0;
+      font-family: 'Pangolin', cursive;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 1rem;
+      background-image: radial-gradient(circle at 20% 30%, #E8B4B833 0%, transparent 30%),
+                        radial-gradient(circle at 80% 70%, #B2C9AB33 0%, transparent 40%);
+    }
+
+    .card {
+      background: #FFFDF9;
+      border: 4px dashed #B2C9AB;
+      border-radius: 32px 12px 32px 12px;
+      padding: 2.5rem 2rem;
+      max-width: 520px;
+      width: 100%;
+      box-shadow: 8px 8px 0 #B2C9AB, 12px 12px 0 rgba(0,0,0,0.05);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* squiggly top decoration */
+    .card::before {
+      content: "✧˖°࿐✧˖°";
+      position: absolute;
+      top: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 2.2rem;
+      color: #E8B4B8;
+      letter-spacing: 6px;
+      opacity: 0.8;
+    }
+
+    h1 {
+      font-size: 2.2rem;
+      color: #5A7D5C;
+      margin-top: 0.8rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+    }
+    h1 span { font-size: 2.8rem; }
+
+    .sub {
+      color: #7A8B6F;
+      margin-bottom: 1.8rem;
+      font-size: 1rem;
+      letter-spacing: 1px;
+      text-transform: lowercase;
+    }
+
+    textarea, select, button {
+      font-family: 'Pangolin', cursive;
+    }
+
+    textarea {
+      width: 100%;
+      padding: 0.9rem;
+      border: 3px solid #D4E2D0;
+      border-radius: 20px 8px 20px 8px;
+      background: #F9F6F0;
+      font-size: 1.05rem;
+      resize: vertical;
+      outline: none;
+      transition: border 0.2s;
+      color: #4A5D4A;
+    }
+    textarea:focus {
+      border-color: #B2C9AB;
+      background: #FFFDF9;
+    }
+
+    .ratio-group {
+      margin: 1.2rem 0;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      justify-content: center;
+    }
+    .ratio-btn {
+      background: transparent;
+      border: 2px solid #D4E2D0;
+      padding: 0.4rem 0.9rem;
+      border-radius: 40px;
+      font-size: 0.9rem;
+      color: #5A7D5C;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .ratio-btn.active {
+      background: #B2C9AB;
+      color: white;
+      border-color: #B2C9AB;
+      box-shadow: 0 2px 6px #B2C9AB66;
+    }
+
+    .generate-btn {
+      background: #E8B4B8;
+      border: none;
+      padding: 0.9rem 2.2rem;
+      font-size: 1.3rem;
+      border-radius: 60px;
+      color: #FFFDF9;
+      margin: 0.8rem 0 1.5rem;
+      cursor: pointer;
+      transition: 0.15s;
+      letter-spacing: 0.5px;
+      box-shadow: 0 5px 0 #D49B9F, 0 6px 12px rgba(0,0,0,0.05);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .generate-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 7px 0 #D49B9F, 0 8px 15px rgba(0,0,0,0.08);
+    }
+    .generate-btn:active {
+      transform: translateY(2px);
+      box-shadow: 0 3px 0 #D49B9F, 0 4px 8px rgba(0,0,0,0.05);
+    }
+
+    .result-area {
+      margin-top: 1rem;
+      position: relative;
+    }
+    .result-area img {
+      max-width: 100%;
+      border-radius: 24px 8px 24px 8px;
+      border: 3px dashed #B2C9AB;
+      margin-bottom: 0.7rem;
+    }
+    .expiry-tag {
+      background: #F9F6F0;
+      display: inline-block;
+      padding: 0.3rem 1rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      color: #7A8B6F;
+      border: 1px dashed #B2C9AB;
+    }
+
+    .loading-text {
+      color: #5A7D5C;
+      margin: 1.2rem 0;
+      font-size: 1.1rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 0.3rem;
+    }
+    .spinner {
+      width: 1.4rem;
+      height: 1.4rem;
+      border: 3px solid #D4E2D0;
+      border-top: 3px solid #E8B4B8;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .error-msg {
+      color: #C97A7A;
+      margin: 1rem 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>
+      <span>🔮</span> flux·memes <span>✨</span>
+    </h1>
+    <div class="sub">manifest ur wildest image, bestie</div>
+
+    <!-- Prompt -->
+    <textarea id="prompt" rows="3" placeholder="e.g. a capybara wearing sunglasses vibing in a retro diner, anime style, no cap">spiderman, batman, and spongebob hanging out in a luxury car, photorealistic 8k</textarea>
+
+    <!-- Aspect ratio selector -->
+    <div class="ratio-group" id="ratioGroup">
+      <span class="ratio-btn active" data-ratio="1:1">1:1 📸</span>
+      <span class="ratio-btn" data-ratio="16:9">16:9 📺</span>
+      <span class="ratio-btn" data-ratio="9:16">9:16 📱</span>
+      <span class="ratio-btn" data-ratio="4:3">4:3 🖼</span>
+    </div>
+
+    <button class="generate-btn" id="generateBtn">
+      <span>manifest image 🔮</span>
+    </button>
+
+    <div id="resultContainer"></div>
+  </div>
+
+  <script>
+    const API_BASE = 'https://viscodev.x10.mx/Flux-MAX/api.php';
+    const promptInput = document.getElementById('prompt');
+    const generateBtn = document.getElementById('generateBtn');
+    const resultContainer = document.getElementById('resultContainer');
+    const ratioButtons = document.querySelectorAll('.ratio-btn');
+
+    let selectedRatio = '1:1';
+
+    // Ratio selector logic
+    ratioButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        ratioButtons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        selectedRatio = btn.dataset.ratio;
+      });
+    });
+
+    // Gen Z loading messages
+    const loadingMessages = [
+      "cooking... 💅✨", "manifesting pixels... 🔮", "aesthetic loading... 🌿",
+      "summoning the vibe... 🧘", "slay, wait a sec... 😌", "midjourney who? brb... 👀"
+    ];
+
+    generateBtn.addEventListener('click', async () => {
+      const prompt = promptInput.value.trim();
+      if (!prompt) {
+        resultContainer.innerHTML = '<div class="error-msg">👀 bestie u gotta type something first</div>';
+        return;
+      }
+
+      // Show loading
+      const randomMsg = loadingMessages[Math.floor(Math.random() * loadingMessages.length)];
+      resultContainer.innerHTML = `
+        <div class="loading-text">
+          <div class="spinner"></div> ${randomMsg}
+        </div>
+      `;
+
+      const url = `${API_BASE}?prompt=${encodeURIComponent(prompt)}&aspect_ratio=${selectedRatio}`;
+
+      try {
+        const response = await fetch(url);
+        const data = await response.json();
+
+        if (data.success) {
+          const imgUrl = data.image_url;
+          const expires = data.expires_in || '4 minutes';
+          // Random compliment after success
+          const compliments = [
+            "ur mind >> 🧠✨", "ate that prompt fr 🍽", "no crumbs left 💅",
+            "this goes hard 🔥", "iconic behavior 🏆"
+          ];
+          const randomComp = compliments[Math.floor(Math.random() * compliments.length)];
+
+          resultContainer.innerHTML = `
+            <div class="result-area">
+              <img src="${imgUrl}" alt="Generated image" onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\\'error-msg\\'>image said ✌️ (maybe expired)</div>';">
+              <div class="expiry-tag">⏳ expires in ~${expires} – screenshot bestie!</div>
+              <div style="margin-top:0.4rem;color:#7A8B6F;">${randomComp}</div>
+            </div>
+          `;
+        } else {
+          resultContainer.innerHTML = '<div class="error-msg">❌ vibe check failed: API said no</div>';
+        }
+      } catch (err) {
+        resultContainer.innerHTML = '<div class="error-msg">💀 no cap, something went wrong. try again?</div>';
+        console.error(err);
+      }
+    });
+  </script>
+</body>
+</html>
