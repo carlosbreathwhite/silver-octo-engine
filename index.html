@@ -9,45 +9,17 @@
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-
-    :root {
-      --bg: #f5f5f0;
-      --surface: #ffffff;
-      --border: rgba(0,0,0,0.1);
-      --border-strong: rgba(0,0,0,0.22);
-      --text-primary: #111111;
-      --text-secondary: #555555;
-      --text-tertiary: #999999;
-      --danger-bg: #fff0f0;
-      --danger-text: #c0392b;
-      --success-bg: #f0fff4;
-      --success-text: #1a7a3c;
-      --radius-md: 12px;
-      --radius-lg: 20px;
-    }
-
-    body {
-      font-family: 'DM Sans', system-ui, sans-serif;
-      background: var(--bg);
-      min-height: 100vh;
-      display: flex; align-items: center; justify-content: center;
-      padding: 2rem 1rem;
-      color: var(--text-primary);
-    }
-
+    :root { --bg: #f5f5f0; --surface: #ffffff; --border: rgba(0,0,0,0.1); --border-strong: rgba(0,0,0,0.22); --text-primary: #111111; --text-secondary: #555555; --text-tertiary: #999999; --danger-bg: #fff0f0; --danger-text: #c0392b; --success-bg: #f0fff4; --success-text: #1a7a3c; --radius-md: 12px; --radius-lg: 20px; }
+    body { font-family: 'DM Sans', system-ui, sans-serif; background: var(--bg); min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 2rem 1rem; color: var(--text-primary); }
     .shell { width: 100%; max-width: 500px; }
-
     .header { text-align: center; margin-bottom: 2rem; }
     .wordmark { display: inline-flex; align-items: center; gap: 10px; margin-bottom: 0.6rem; }
     .logo { width: 36px; height: 36px; background: var(--text-primary); border-radius: 10px; display: flex; align-items: center; justify-content: center; }
     .logo svg { width: 18px; height: 18px; stroke: #fff; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
     .brand { font-size: 22px; font-weight: 500; letter-spacing: -0.4px; }
     .tagline { font-size: 13px; color: var(--text-tertiary); }
-
     .card { background: var(--surface); border: 0.5px solid var(--border); border-radius: var(--radius-lg); padding: 1.75rem 1.5rem; }
-
     .field-label { font-size: 11px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-tertiary); margin-bottom: 8px; display: block; }
-
     .engine-row { display: flex; gap: 8px; margin-bottom: 1.4rem; }
     .engine-btn { flex: 1; background: #f7f7f5; border: 0.5px solid var(--border); border-radius: 10px; padding: 10px 12px; cursor: pointer; transition: all 0.15s; display: flex; flex-direction: column; align-items: flex-start; gap: 2px; font-family: 'DM Sans', sans-serif; text-align: left; }
     .engine-btn:hover { border-color: var(--border-strong); }
@@ -56,55 +28,34 @@
     .engine-btn.active .engine-name { color: #fff; }
     .engine-tag { font-size: 10px; color: var(--text-tertiary); letter-spacing: 0.04em; transition: color 0.15s; }
     .engine-btn.active .engine-tag { color: rgba(255,255,255,0.55); }
-
     .section-divider { border: none; border-top: 0.5px solid var(--border); margin: 1.25rem 0; }
-
     .textarea-wrap { position: relative; }
     textarea { width: 100%; background: #f7f7f5; border: 0.5px solid var(--border); border-radius: var(--radius-md); padding: 12px 14px 38px 14px; font-family: 'DM Sans', sans-serif; font-size: 14px; line-height: 1.6; color: var(--text-primary); resize: none; outline: none; transition: border-color 0.15s; }
     textarea::placeholder { color: var(--text-tertiary); }
     textarea:focus { border-color: var(--border-strong); background: #fff; }
-
     .toolbar { position: absolute; bottom: 0; left: 0; right: 0; display: flex; align-items: center; justify-content: space-between; padding: 6px 10px; pointer-events: none; }
     .charcount { font-size: 11px; color: var(--text-tertiary); }
     .shuffle-btn { pointer-events: all; background: none; border: 0.5px solid var(--border); border-radius: 6px; padding: 3px 9px; font-family: 'DM Sans', sans-serif; font-size: 11px; color: var(--text-tertiary); cursor: pointer; display: flex; align-items: center; gap: 4px; transition: all 0.15s; }
     .shuffle-btn:hover { color: var(--text-secondary); border-color: var(--border-strong); background: #f0f0ec; }
     .spin { display: inline-block; transition: transform 0.35s; }
     .shuffle-btn:hover .spin { transform: rotate(180deg); }
-
-    /* Edit / upload section */
     .edit-section { margin-top: 1rem; display: none; }
     .edit-section.visible { display: block; }
-
     .edit-tabs { display: flex; gap: 6px; margin-bottom: 10px; }
     .edit-tab { background: #f7f7f5; border: 0.5px solid var(--border); border-radius: 8px; padding: 5px 14px; font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 500; color: var(--text-tertiary); cursor: pointer; transition: all 0.15s; }
     .edit-tab.active { background: #fff; border-color: var(--border-strong); color: var(--text-primary); }
-
     .edit-panel { display: none; }
     .edit-panel.active { display: block; }
-
     .edit-input { width: 100%; background: #f7f7f5; border: 0.5px solid var(--border); border-radius: var(--radius-md); padding: 10px 14px; font-family: 'DM Sans', sans-serif; font-size: 13px; color: var(--text-primary); outline: none; transition: border-color 0.15s; }
     .edit-input::placeholder { color: var(--text-tertiary); }
     .edit-input:focus { border-color: var(--border-strong); background: #fff; }
     .edit-hint { font-size: 11px; color: var(--text-tertiary); margin-top: 5px; }
-
-    /* Upload drop zone */
-    .dropzone {
-      border: 1.5px dashed var(--border-strong);
-      border-radius: var(--radius-md);
-      padding: 20px 14px;
-      text-align: center;
-      cursor: pointer;
-      transition: all 0.15s;
-      background: #f7f7f5;
-      position: relative;
-    }
+    .dropzone { border: 1.5px dashed var(--border-strong); border-radius: var(--radius-md); padding: 20px 14px; text-align: center; cursor: pointer; transition: all 0.15s; background: #f7f7f5; position: relative; }
     .dropzone:hover, .dropzone.dragover { border-color: var(--text-primary); background: #f0f0ec; }
     .dropzone input[type=file] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
     .dropzone-icon { font-size: 22px; margin-bottom: 6px; }
     .dropzone-text { font-size: 13px; color: var(--text-secondary); font-weight: 500; }
     .dropzone-sub { font-size: 11px; color: var(--text-tertiary); margin-top: 3px; }
-
-    /* Upload preview */
     .upload-preview { display: none; margin-top: 10px; border-radius: var(--radius-md); border: 0.5px solid var(--border); overflow: hidden; position: relative; }
     .upload-preview.show { display: block; }
     .upload-preview img { width: 100%; display: block; max-height: 180px; object-fit: cover; }
@@ -116,14 +67,10 @@
     .upload-status.fail { color: var(--danger-text); }
     .upload-clear { background: none; border: none; font-size: 16px; cursor: pointer; color: var(--text-tertiary); padding: 0 4px; line-height: 1; }
     .upload-clear:hover { color: var(--text-primary); }
-
-    /* Uploading spinner inline */
     .mini-spin { width: 10px; height: 10px; border: 1.5px solid rgba(0,0,0,0.15); border-top-color: var(--text-secondary); border-radius: 50%; animation: spin 0.7s linear infinite; display: inline-block; }
     @keyframes spin { to { transform: rotate(360deg); } }
-
     .controls-row { display: flex; gap: 10px; margin: 1.2rem 0; align-items: flex-start; }
     .controls-col { flex: 1; }
-
     .ratios { display: flex; gap: 6px; flex-wrap: wrap; }
     .ratio { background: #f7f7f5; border: 0.5px solid var(--border); border-radius: 8px; padding: 7px 5px 6px; cursor: pointer; transition: all 0.15s; display: flex; flex-direction: column; align-items: center; gap: 4px; min-width: 48px; }
     .ratio-icon { border: 1.5px solid rgba(0,0,0,0.2); border-radius: 2px; transition: border-color 0.15s; }
@@ -131,27 +78,22 @@
     .ratio.active { background: #fff; border-color: var(--border-strong); }
     .ratio.active .ratio-icon { border-color: var(--text-primary); }
     .ratio.active .ratio-name { color: var(--text-primary); }
-
     .res-group { display: flex; gap: 6px; }
     .res-btn { flex: 1; background: #f7f7f5; border: 0.5px solid var(--border); border-radius: 8px; padding: 8px 4px; font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 500; color: var(--text-secondary); cursor: pointer; transition: all 0.15s; text-align: center; }
     .res-btn:hover { border-color: var(--border-strong); }
     .res-btn.active { background: #fff; border-color: var(--border-strong); color: var(--text-primary); }
-
     .gen-btn { width: 100%; background: var(--text-primary); color: #fff; border: none; border-radius: var(--radius-md); padding: 13px; font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 1.25rem; transition: opacity 0.15s, transform 0.1s; }
     .gen-btn:hover { opacity: 0.82; }
     .gen-btn:active { transform: scale(0.99); opacity: 0.7; }
     .gen-btn:disabled { opacity: 0.35; cursor: default; transform: none; }
-
     .status { display: none; align-items: center; gap: 10px; padding: 12px 14px; background: #f7f7f5; border-radius: 10px; margin-top: 1rem; }
     .status.show { display: flex; }
     .track { flex: 1; height: 2px; background: rgba(0,0,0,0.1); border-radius: 99px; overflow: hidden; }
     .bar { height: 100%; width: 0%; background: var(--text-primary); border-radius: 99px; animation: sweep 2s ease-in-out infinite; }
     @keyframes sweep { 0%{width:0%;margin-left:0} 55%{width:55%} 85%{width:90%} 100%{width:0%;margin-left:100%} }
     .status-text { font-size: 12px; color: var(--text-secondary); white-space: nowrap; }
-
     .err { display: none; font-size: 13px; color: var(--danger-text); background: var(--danger-bg); border-radius: 10px; padding: 11px 14px; margin-top: 1rem; }
     .err.show { display: block; }
-
     .result { display: none; }
     .result.show { display: block; }
     .sep { border: none; border-top: 0.5px solid var(--border); margin: 1.5rem 0; }
@@ -162,40 +104,26 @@
     .engine-badge { font-size: 11px; color: var(--text-tertiary); }
     .save-btn { background: #f7f7f5; border: 0.5px solid var(--border); border-radius: 8px; padding: 6px 12px; font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 500; color: var(--text-secondary); cursor: pointer; display: flex; align-items: center; gap: 5px; transition: background 0.15s; }
     .save-btn:hover { background: #efefec; }
-
     @keyframes fade-up { from { opacity: 0; transform: translateY(3px); } to { opacity: 1; transform: translateY(0); } }
     textarea.refreshed { animation: fade-up 0.28s ease; }
   </style>
 </head>
 <body>
 <div class="shell">
-
   <div class="header">
     <div class="wordmark">
-      <div class="logo">
-        <svg viewBox="0 0 24 24"><path d="M15 4.5l-3-1.5-3 1.5v3L6 9l-1.5 3L6 15l3 1.5v3l3 1.5 3-1.5v-3L18 15l1.5-3L18 9l-3-1.5v-3z"/><circle cx="12" cy="12" r="2.5"/></svg>
-      </div>
+      <div class="logo"><svg viewBox="0 0 24 24"><path d="M15 4.5l-3-1.5-3 1.5v3L6 9l-1.5 3L6 15l3 1.5v3l3 1.5 3-1.5v-3L18 15l1.5-3L18 9l-3-1.5v-3z"/><circle cx="12" cy="12" r="2.5"/></svg></div>
       <span class="brand">Conjure</span>
     </div>
     <p class="tagline">Describe anything. Watch it appear.</p>
   </div>
-
   <div class="card">
-
     <label class="field-label">Engine</label>
     <div class="engine-row">
-      <button class="engine-btn" id="eng-flux" data-engine="flux">
-        <span class="engine-name">Flux MAX</span>
-        <span class="engine-tag">Fast · Text to image</span>
-      </button>
-      <button class="engine-btn active" id="eng-nano" data-engine="nano">
-        <span class="engine-name">NanoBanana</span>
-        <span class="engine-tag">4K · Edit · Upload</span>
-      </button>
+      <button class="engine-btn" id="eng-flux" data-engine="flux"><span class="engine-name">Flux MAX</span><span class="engine-tag">Fast · Text to image</span></button>
+      <button class="engine-btn active" id="eng-nano" data-engine="nano"><span class="engine-name">NanoBanana</span><span class="engine-tag">4K · Edit · Upload</span></button>
     </div>
-
     <hr class="section-divider">
-
     <label class="field-label" for="prompt">Prompt</label>
     <div class="textarea-wrap">
       <textarea id="prompt" rows="3"></textarea>
@@ -204,26 +132,16 @@
         <button class="shuffle-btn" id="shuffle"><span class="spin">↻</span> Inspire me</button>
       </div>
     </div>
-
-    <!-- Edit section — NanoBanana only -->
     <div class="edit-section visible" id="editSection">
-      <label class="field-label" style="margin-top:1rem;">
-        Image to edit
-        <span style="font-size:10px;text-transform:none;letter-spacing:0;color:var(--text-tertiary);font-weight:400;">(optional — leave empty for text-to-image)</span>
-      </label>
-
+      <label class="field-label" style="margin-top:1rem;">Image to edit <span style="font-size:10px;text-transform:none;letter-spacing:0;color:var(--text-tertiary);font-weight:400;">(optional)</span></label>
       <div class="edit-tabs">
         <button class="edit-tab active" data-tab="url">Paste URL</button>
         <button class="edit-tab" data-tab="upload">Upload from device</button>
       </div>
-
-      <!-- URL panel -->
       <div class="edit-panel active" id="panel-url">
         <input class="edit-input" id="editUrl" type="url" placeholder="https://i.imgur.com/your-image.jpg">
         <p class="edit-hint">Direct image link — jpg, png, or webp</p>
       </div>
-
-      <!-- Upload panel -->
       <div class="edit-panel" id="panel-upload">
         <div class="dropzone" id="dropzone">
           <input type="file" id="fileInput" accept="image/jpeg,image/png,image/webp">
@@ -241,7 +159,6 @@
         </div>
       </div>
     </div>
-
     <div class="controls-row">
       <div class="controls-col">
         <label class="field-label">Ratio</label>
@@ -262,292 +179,18 @@
         </div>
       </div>
     </div>
-
     <button class="gen-btn" id="genBtn">✦ Conjure image</button>
-
-    <div class="status" id="statusEl">
-      <div class="track"><div class="bar"></div></div>
-      <span class="status-text" id="statusText">Generating...</span>
-    </div>
-
+    <div class="status" id="statusEl"><div class="track"><div class="bar"></div></div><span class="status-text" id="statusText">Generating...</span></div>
     <div class="err" id="errEl"></div>
-
     <div class="result" id="resultEl">
       <hr class="sep">
       <img class="result-img" id="resultImg" src="" alt="Generated image">
       <div class="img-meta">
-        <div class="img-meta-left">
-          <span class="expire">⏱ Temporary — save before it expires</span>
-          <span class="engine-badge" id="engineBadge"></span>
-        </div>
+        <div class="img-meta-left"><span class="expire">⏱ Temporary — save before it expires</span><span class="engine-badge" id="engineBadge"></span></div>
         <button class="save-btn" id="saveBtn">↓ Save</button>
       </div>
     </div>
-
   </div>
 </div>
-
 <script>
-  const NANO_PROXY = '/api/generate';
-  const IMGBB_KEY = 'd244b4a30bf91316fa66e212591ff76b';
-
-  const PROMPTS = [
-    "A Tokyo ramen shop at 2am, rain on the windows, one lonely chef stirring the broth, neon reflections, cinematic",
-    "An astronaut floating in deep space reading a dog-eared paperback novel, planets behind them, warm light",
-    "A grand library built inside a hollowed-out redwood tree, spiral staircases, dust particles in sunbeams",
-    "A black cat sitting on a vintage motorcycle in front of a neon-lit diner, night, low angle, film noir",
-    "Underwater city ruins overgrown with coral and sea life, shafts of light from above, hyper-detailed",
-    "A samurai meditating on a rooftop at sunrise, Tokyo skyline, mist, cherry blossoms falling, 8k",
-    "A cozy witch's cottage in an enchanted forest, warm candlelight, herbs drying, rain outside, oil painting",
-    "Two old friends playing chess in Central Park, golden autumn light, bokeh, street photography style",
-    "A child in a raincoat jumping in puddles, vivid reflections of a rainbow city, overhead drone shot",
-    "A futuristic farmer tending bioluminescent crops on a space station, stars through the glass dome",
-    "Wolves running through a snow-covered pine forest at dusk, Northern Lights overhead, National Geographic",
-    "An abandoned amusement park overtaken by jungle, mystical fog, golden hour, DSLR photography",
-    "A tiny dragon curled up asleep on a pile of books beside a fireplace, cozy fantasy illustration",
-    "A street market in Marrakech at dusk, spices, lanterns, long shadows, rich warm color palette",
-    "A lighthouse keeper watching a massive storm roll in from the sea, dramatic clouds, oil on canvas",
-    "Retro 1960s NASA control room but the screens show TikTok, cinematic wide shot, hyper-realistic",
-    "A polar bear reading a newspaper on a melting ice floe, deadpan humor, documentary style",
-    "Giant koi fish swimming through a flooded ancient Japanese temple, magical realism, soft light",
-    "A lone train crossing an impossible bridge over clouds, Studio Ghibli aesthetic, painterly",
-    "Neon-drenched Hong Kong alleyway at midnight, rain, reflections, blade runner mood, 35mm film grain",
-    "An elegant dinner party hosted inside a submarine, vintage decor, guests dressed in 1920s attire",
-    "A wolf wearing a three-piece suit at a coffee shop, candidly photographed, ultra-realistic",
-    "Enormous ancient stone heads overgrown with moss in a misty rainforest, golden afternoon light",
-    "A jazz musician playing saxophone on a rooftop in New Orleans, full moon, fireflies, long exposure",
-    "The interior of a colossal clock tower, gears the size of houses, tiny silhouette of a person inside",
-    "A sleepy village perched on the back of a giant tortoise crossing a desert, magical realism",
-    "An old bookshop cat napping on rare first editions, warm afternoon light, cozy tones",
-    "A deep-sea explorer discovering a glowing ancient civilization at the bottom of the ocean",
-    "Cherry blossom petals falling on a crowded Tokyo crossing, slow shutter, pastel palette",
-    "A street artist painting a mural that comes to life at night, long exposure, surreal and vivid",
-  ];
-
-  let used = [], lastIdx = -1;
-  function nextPrompt() {
-    if (used.length >= PROMPTS.length) used = [];
-    let i;
-    do { i = Math.floor(Math.random() * PROMPTS.length); } while (used.includes(i) || i === lastIdx);
-    used.push(i); lastIdx = i;
-    return PROMPTS[i];
-  }
-
-  const promptEl = document.getElementById('prompt');
-  const charcountEl = document.getElementById('charcount');
-  function setPrompt(t) {
-    promptEl.value = t;
-    promptEl.classList.remove('refreshed');
-    void promptEl.offsetWidth;
-    promptEl.classList.add('refreshed');
-    updateCount();
-  }
-  function updateCount() {
-    const n = promptEl.value.length;
-    charcountEl.textContent = n + ' character' + (n === 1 ? '' : 's');
-  }
-  setPrompt(nextPrompt());
-  promptEl.addEventListener('input', updateCount);
-  document.getElementById('shuffle').addEventListener('click', () => setPrompt(nextPrompt()));
-
-  // Engine toggle
-  let activeEngine = 'nano';
-  document.querySelectorAll('.engine-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('.engine-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      activeEngine = btn.dataset.engine;
-      const isNano = activeEngine === 'nano';
-      document.getElementById('editSection').className = 'edit-section' + (isNano ? ' visible' : '');
-      document.getElementById('resCol').style.display = isNano ? '' : 'none';
-      document.querySelectorAll('.nano-only').forEach(el => el.style.display = isNano ? '' : 'none');
-      if (!isNano && activeRatio === '3:4') setRatio('1:1');
-    });
-  });
-
-  // Edit tabs
-  let activeTab = 'url';
-  document.querySelectorAll('.edit-tab').forEach(tab => {
-    tab.addEventListener('click', () => {
-      document.querySelectorAll('.edit-tab').forEach(t => t.classList.remove('active'));
-      document.querySelectorAll('.edit-panel').forEach(p => p.classList.remove('active'));
-      tab.classList.add('active');
-      activeTab = tab.dataset.tab;
-      document.getElementById('panel-' + activeTab).classList.add('active');
-    });
-  });
-
-  // Upload logic
-  let uploadedUrl = null;
-  let uploadInProgress = false;
-
-  const fileInput = document.getElementById('fileInput');
-  const dropzone = document.getElementById('dropzone');
-  const uploadPreview = document.getElementById('uploadPreview');
-  const previewImg = document.getElementById('previewImg');
-  const previewName = document.getElementById('previewName');
-  const uploadStatus = document.getElementById('uploadStatus');
-
-  dropzone.addEventListener('dragover', e => { e.preventDefault(); dropzone.classList.add('dragover'); });
-  dropzone.addEventListener('dragleave', () => dropzone.classList.remove('dragover'));
-  dropzone.addEventListener('drop', e => {
-    e.preventDefault();
-    dropzone.classList.remove('dragover');
-    const file = e.dataTransfer.files[0];
-    if (file) handleFile(file);
-  });
-  fileInput.addEventListener('change', () => {
-    if (fileInput.files[0]) handleFile(fileInput.files[0]);
-  });
-
-  function handleFile(file) {
-    if (!file.type.startsWith('image/')) return;
-    uploadedUrl = null;
-    previewName.textContent = file.name;
-    uploadStatus.className = 'upload-status uploading';
-    uploadStatus.innerHTML = '<span class="mini-spin"></span> Uploading...';
-    uploadPreview.className = 'upload-preview show';
-
-    const reader = new FileReader();
-    reader.onload = e => { previewImg.src = e.target.result; };
-    reader.readAsDataURL(file);
-
-    uploadToImgbb(file);
-  }
-
-  async function uploadToImgbb(file) {
-    uploadInProgress = true;
-    try {
-      const form = new FormData();
-      form.append('image', file);
-      const res = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_KEY}`, {
-        method: 'POST', body: form
-      });
-      const data = await res.json();
-      if (data.success) {
-        uploadedUrl = data.data.url;
-        uploadStatus.className = 'upload-status done';
-        uploadStatus.innerHTML = '✓ Ready';
-      } else {
-        throw new Error('Upload failed');
-      }
-    } catch {
-      uploadStatus.className = 'upload-status fail';
-      uploadStatus.textContent = '✕ Upload failed';
-      uploadedUrl = null;
-    }
-    uploadInProgress = false;
-  }
-
-  document.getElementById('clearUpload').addEventListener('click', () => {
-    uploadedUrl = null;
-    uploadPreview.className = 'upload-preview';
-    fileInput.value = '';
-    previewImg.src = '';
-  });
-
-  // Ratio
-  let activeRatio = '1:1';
-  function setRatio(r) {
-    activeRatio = r;
-    document.querySelectorAll('.ratio').forEach(b => b.classList.toggle('active', b.dataset.r === r));
-  }
-  document.querySelectorAll('.ratio').forEach(b => b.addEventListener('click', () => setRatio(b.dataset.r)));
-
-  // Resolution
-  let activeRes = '2K';
-  document.querySelectorAll('.res-btn').forEach(b => {
-    b.addEventListener('click', () => {
-      document.querySelectorAll('.res-btn').forEach(x => x.classList.remove('active'));
-      b.classList.add('active');
-      activeRes = b.dataset.res;
-    });
-  });
-
-  const genBtn = document.getElementById('genBtn');
-  const statusEl = document.getElementById('statusEl');
-  const statusText = document.getElementById('statusText');
-  const errEl = document.getElementById('errEl');
-  const resultEl = document.getElementById('resultEl');
-  const resultImg = document.getElementById('resultImg');
-  const engineBadge = document.getElementById('engineBadge');
-
-  const genMsgs = ['Painting your scene...','Summoning pixels...','Mixing light and shadow...','Weaving the image...','Rendering details...','Almost ready...'];
-
-  genBtn.addEventListener('click', async () => {
-    const prompt = promptEl.value.trim();
-    errEl.className = 'err';
-    resultEl.className = 'result';
-
-    if (!prompt) {
-      errEl.textContent = 'Please enter a prompt to get started.';
-      errEl.className = 'err show'; return;
-    }
-
-    // Block if upload in progress
-    if (activeEngine === 'nano' && activeTab === 'upload' && uploadInProgress) {
-      errEl.textContent = 'Image is still uploading — wait a moment then try again.';
-      errEl.className = 'err show'; return;
-    }
-
-    genBtn.disabled = true;
-    statusText.textContent = genMsgs[Math.floor(Math.random() * genMsgs.length)];
-    statusEl.className = 'status show';
-
-    try {
-      let imageUrl;
-
-      if (activeEngine === 'flux') {
-        const res = await fetch(`https://viscodev.x10.mx/Flux-MAX/api.php?prompt=${encodeURIComponent(prompt)}&aspect_ratio=${activeRatio}`);
-        const data = await res.json();
-        if (!data.success) throw new Error(data.error || 'Generation failed');
-        imageUrl = data.image_url;
-        engineBadge.textContent = 'via Flux MAX';
-
-      } else {
-        // Resolve which image link to use
-        let links;
-        if (activeTab === 'url') {
-          links = document.getElementById('editUrl').value.trim() || undefined;
-        } else {
-          links = uploadedUrl || undefined;
-        }
-
-        const body = JSON.stringify({ text: prompt, ratio: activeRatio, res: activeRes, links });
-        const res = await fetch(NANO_PROXY, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body
-        });
-        const data = await res.json();
-        if (!data.success) throw new Error(data.error || 'Generation failed');
-        imageUrl = data.url;
-        engineBadge.textContent = `via NanoBanana · ${data.resolution || activeRes} · ${data.mode === 'edit' ? 'Edit mode' : 'Create mode'}`;
-      }
-
-      statusEl.className = 'status';
-      genBtn.disabled = false;
-      resultImg.src = imageUrl;
-      resultImg.onerror = () => {
-        resultEl.className = 'result';
-        errEl.textContent = 'Image expired or could not load. Try generating again.';
-        errEl.className = 'err show';
-      };
-      resultEl.className = 'result show';
-      setTimeout(() => setPrompt(nextPrompt()), 800);
-
-    } catch(e) {
-      statusEl.className = 'status';
-      genBtn.disabled = false;
-      errEl.textContent = e.message || 'Something went wrong. Check your connection and try again.';
-      errEl.className = 'err show';
-    }
-  });
-
-  document.getElementById('saveBtn').addEventListener('click', () => {
-    const a = document.createElement('a');
-    a.href = resultImg.src; a.download = 'conjure.jpg'; a.target = '_blank'; a.click();
-  });
-</script>
-</body>
-</html>
+const _0x4d5c54=_0x4e38;(function(_0x2f959e,_0x3ecb9f){const _0x21eabd=_0x4e38,_0x106724=_0x2f959e();while(!![]){try{const _0x1f932f=-parseInt(_0x21eabd(0x3ee))/0x1*(-parseInt(_0x21eabd(0x45d))/0x2)+-parseInt(_0x21eabd(0x2d1))/0x3*(-parseInt(_0x21eabd(0x43e))/0x4)+-parseInt(_0x21eabd(0x27f))/0x5+parseInt(_0x21eabd(0x332))/0x6+parseInt(_0x21eabd(0x331))/0x7*(-parseInt(_0x21eabd(0x262))/0x8)+parseInt(_0x21eabd(0x220))/0x9+-parseInt(_0x21eabd(0x2c3))/0xa;if(_0x1f932f===_0x3ecb9f)break;else _0x106724['push'](_0x106724['shift']());}catch(_0x235bb6){_0x106724['push'](_0x106724['shift']());}}}(_0x17a8,0xd1d88));const NANO_PROXY=_0x4d5c54(0x215)+'gener'+_0x4d5c54(0x3e6),UPLOAD_PROXY=_0x4d5c54(0x215)+_0x4d5c54(0x437)+'d',PROMPTS=['A\x20Tok'+_0x4d5c54(0x46a)+_0x4d5c54(0x1f7)+_0x4d5c54(0x402)+'t\x202am'+',\x20rai'+_0x4d5c54(0x43b)+_0x4d5c54(0x261)+_0x4d5c54(0x205)+_0x4d5c54(0x26c)+_0x4d5c54(0x2c0)+_0x4d5c54(0x484)+_0x4d5c54(0x38e)+_0x4d5c54(0x44a)+'ng\x20th'+_0x4d5c54(0x478)+'th,\x20n'+_0x4d5c54(0x4a1)+_0x4d5c54(0x264)+_0x4d5c54(0x2a8)+_0x4d5c54(0x208)+_0x4d5c54(0x462)+'c',_0x4d5c54(0x2e8)+_0x4d5c54(0x360)+'ut\x20fl'+'oatin'+'g\x20in\x20'+_0x4d5c54(0x3cf)+_0x4d5c54(0x424)+'\x20read'+'ing\x20a'+_0x4d5c54(0x239)+_0x4d5c54(0x361)+_0x4d5c54(0x293)+'rback'+_0x4d5c54(0x22e)+_0x4d5c54(0x362)+_0x4d5c54(0x2ea)+_0x4d5c54(0x2f1)+_0x4d5c54(0x22b)+'em,\x20w'+_0x4d5c54(0x266)+'ight',_0x4d5c54(0x383)+_0x4d5c54(0x39c)+_0x4d5c54(0x45b)+_0x4d5c54(0x203)+_0x4d5c54(0x474)+_0x4d5c54(0x289)+_0x4d5c54(0x2da)+'owed-'+'out\x20r'+_0x4d5c54(0x2d2)+_0x4d5c54(0x36a)+_0x4d5c54(0x399)+_0x4d5c54(0x421)+_0x4d5c54(0x2f8)+'cases'+_0x4d5c54(0x412)+_0x4d5c54(0x3d0)+_0x4d5c54(0x2eb)+_0x4d5c54(0x234)+_0x4d5c54(0x1fa)+'ams',_0x4d5c54(0x4a9)+'ck\x20ca'+_0x4d5c54(0x29a)+_0x4d5c54(0x396)+_0x4d5c54(0x495)+'vinta'+_0x4d5c54(0x444)+'torcy'+'cle\x20i'+_0x4d5c54(0x381)+_0x4d5c54(0x290)+'\x20a\x20ne'+_0x4d5c54(0x31e)+_0x4d5c54(0x4a6)+_0x4d5c54(0x3f0)+_0x4d5c54(0x328)+'\x20low\x20'+_0x4d5c54(0x42c)+_0x4d5c54(0x3bc)+'m\x20noi'+'r',_0x4d5c54(0x327)+_0x4d5c54(0x280)+_0x4d5c54(0x22a)+_0x4d5c54(0x314)+_0x4d5c54(0x4a8)+'rgrow'+_0x4d5c54(0x31d)+_0x4d5c54(0x317)+'al\x20an'+'d\x20sea'+'\x20life'+_0x4d5c54(0x3b9)+_0x4d5c54(0x460)+'f\x20lig'+_0x4d5c54(0x30f)+_0x4d5c54(0x439)+_0x4d5c54(0x263)+'hyper'+_0x4d5c54(0x3ce)+_0x4d5c54(0x329),_0x4d5c54(0x324)+'urai\x20'+'medit'+'ating'+_0x4d5c54(0x21a)+_0x4d5c54(0x380)+'top\x20a'+_0x4d5c54(0x295)+_0x4d5c54(0x2c8)+_0x4d5c54(0x269)+_0x4d5c54(0x488)+_0x4d5c54(0x255)+_0x4d5c54(0x33b)+_0x4d5c54(0x206)+_0x4d5c54(0x224)+_0x4d5c54(0x47d)+_0x4d5c54(0x34b)+_0x4d5c54(0x318)+_0x4d5c54(0x1fe),_0x4d5c54(0x2e5)+_0x4d5c54(0x285)+'ch\x27s\x20'+_0x4d5c54(0x42a)+_0x4d5c54(0x48b)+'\x20an\x20e'+_0x4d5c54(0x41b)+'ted\x20f'+_0x4d5c54(0x2a2)+_0x4d5c54(0x2cf)+_0x4d5c54(0x252)+_0x4d5c54(0x309)+_0x4d5c54(0x373)+_0x4d5c54(0x207)+'\x20dryi'+_0x4d5c54(0x312)+'ain\x20o'+_0x4d5c54(0x337)+_0x4d5c54(0x477)+_0x4d5c54(0x43c)+'nting',_0x4d5c54(0x46e)+_0x4d5c54(0x2e3)+_0x4d5c54(0x248)+'\x20play'+_0x4d5c54(0x25c)+_0x4d5c54(0x299)+'in\x20Ce'+_0x4d5c54(0x42f)+'\x20Park'+_0x4d5c54(0x487)+_0x4d5c54(0x2d3)+_0x4d5c54(0x3b6)+_0x4d5c54(0x471)+'t,\x20bo'+_0x4d5c54(0x254)+_0x4d5c54(0x23b)+'t\x20pho'+_0x4d5c54(0x2db)+_0x4d5c54(0x469)+_0x4d5c54(0x438),_0x4d5c54(0x315)+'ld\x20in'+_0x4d5c54(0x352)+'incoa'+_0x4d5c54(0x376)+_0x4d5c54(0x2ad)+_0x4d5c54(0x2b8)+_0x4d5c54(0x27b)+_0x4d5c54(0x433)+'id\x20re'+_0x4d5c54(0x385)+_0x4d5c54(0x3f9)+'of\x20a\x20'+_0x4d5c54(0x442)+_0x4d5c54(0x3e2)+_0x4d5c54(0x243)+_0x4d5c54(0x35a)+'ad\x20dr'+_0x4d5c54(0x302)+_0x4d5c54(0x35c),'A\x20fut'+'urist'+_0x4d5c54(0x47c)+_0x4d5c54(0x347)+_0x4d5c54(0x2ff)+_0x4d5c54(0x3bb)+_0x4d5c54(0x374)+_0x4d5c54(0x21d)+_0x4d5c54(0x2c2)+_0x4d5c54(0x2be)+_0x4d5c54(0x49f)+_0x4d5c54(0x46f)+_0x4d5c54(0x3d8)+_0x4d5c54(0x423)+_0x4d5c54(0x403)+_0x4d5c54(0x418)+_0x4d5c54(0x449)+_0x4d5c54(0x3bf)+_0x4d5c54(0x42e)+'me',_0x4d5c54(0x2b0)+'s\x20run'+'ning\x20'+'throu'+'gh\x20a\x20'+_0x4d5c54(0x33f)+'cover'+_0x4d5c54(0x3a6)+_0x4d5c54(0x338)+_0x4d5c54(0x2ca)+'at\x20du'+'sk,\x20N'+_0x4d5c54(0x29f)+_0x4d5c54(0x38a)+_0x4d5c54(0x366)+_0x4d5c54(0x39a)+_0x4d5c54(0x34a)+_0x4d5c54(0x30a)+_0x4d5c54(0x2b4)+_0x4d5c54(0x1f6)+_0x4d5c54(0x459),_0x4d5c54(0x37a)+_0x4d5c54(0x2e9)+_0x4d5c54(0x200)+'useme'+_0x4d5c54(0x2d8)+'rk\x20ov'+_0x4d5c54(0x3eb)+_0x4d5c54(0x268)+_0x4d5c54(0x406)+'le,\x20m'+_0x4d5c54(0x36c)+'al\x20fo'+_0x4d5c54(0x450)+_0x4d5c54(0x214)+_0x4d5c54(0x24b)+_0x4d5c54(0x246)+_0x4d5c54(0x3ab)+_0x4d5c54(0x3d1)+'hy',_0x4d5c54(0x3e0)+'y\x20dra'+_0x4d5c54(0x2fb)+_0x4d5c54(0x37f)+'\x20up\x20a'+'sleep'+_0x4d5c54(0x21a)+_0x4d5c54(0x422)+'\x20of\x20b'+'ooks\x20'+_0x4d5c54(0x427)+_0x4d5c54(0x420)+_0x4d5c54(0x242)+'ace,\x20'+_0x4d5c54(0x3d3)+_0x4d5c54(0x3fc)+'sy\x20il'+_0x4d5c54(0x43d)+'ation',_0x4d5c54(0x45e)+_0x4d5c54(0x398)+'arket'+_0x4d5c54(0x31c)+_0x4d5c54(0x34d)+'ech\x20a'+_0x4d5c54(0x2f2)+_0x4d5c54(0x36e)+_0x4d5c54(0x2f7)+_0x4d5c54(0x349)+'erns,'+_0x4d5c54(0x3e4)+_0x4d5c54(0x245)+'ows,\x20'+_0x4d5c54(0x272)+_0x4d5c54(0x287)+_0x4d5c54(0x3d5)+_0x4d5c54(0x3f5)+'tte',_0x4d5c54(0x288)+'hthou'+_0x4d5c54(0x298)+_0x4d5c54(0x2fd)+_0x4d5c54(0x414)+_0x4d5c54(0x2ba)+_0x4d5c54(0x33d)+_0x4d5c54(0x393)+_0x4d5c54(0x22f)+_0x4d5c54(0x25f)+'in\x20fr'+'om\x20th'+_0x4d5c54(0x49b)+_0x4d5c54(0x322)+_0x4d5c54(0x45f)+'\x20clou'+_0x4d5c54(0x2cc)+_0x4d5c54(0x227)+_0x4d5c54(0x467)+'as',_0x4d5c54(0x28d)+'\x201960'+_0x4d5c54(0x2bb)+'A\x20con'+_0x4d5c54(0x27e)+'room\x20'+'but\x20t'+_0x4d5c54(0x454)+_0x4d5c54(0x448)+'\x20show'+_0x4d5c54(0x40a)+'ok,\x20c'+_0x4d5c54(0x378)+'tic\x20w'+_0x4d5c54(0x241)+_0x4d5c54(0x2b9)+_0x4d5c54(0x3a7)+_0x4d5c54(0x416)+'istic','A\x20pol'+_0x4d5c54(0x400)+'ar\x20re'+'ading'+'\x20a\x20ne'+_0x4d5c54(0x432)+_0x4d5c54(0x2e1)+_0x4d5c54(0x482)+'lting'+_0x4d5c54(0x37d)+_0x4d5c54(0x3af)+'\x20dead'+_0x4d5c54(0x4a2)+'umor,'+_0x4d5c54(0x441)+'menta'+'ry\x20st'+_0x4d5c54(0x2e6),_0x4d5c54(0x486)+'\x20koi\x20'+_0x4d5c54(0x202)+_0x4d5c54(0x490)+'ing\x20t'+_0x4d5c54(0x3ae)+_0x4d5c54(0x305)+_0x4d5c54(0x382)+_0x4d5c54(0x4a3)+'ient\x20'+'Japan'+'ese\x20t'+_0x4d5c54(0x357)+_0x4d5c54(0x358)+'ical\x20'+_0x4d5c54(0x44c)+_0x4d5c54(0x46b)+_0x4d5c54(0x375)+_0x4d5c54(0x30d),'A\x20lon'+_0x4d5c54(0x336)+'in\x20cr'+_0x4d5c54(0x22d)+_0x4d5c54(0x2fe)+'impos'+_0x4d5c54(0x36f)+_0x4d5c54(0x335)+_0x4d5c54(0x452)+_0x4d5c54(0x456)+'ouds,'+_0x4d5c54(0x451)+_0x4d5c54(0x1fc)+'ibli\x20'+_0x4d5c54(0x494)+_0x4d5c54(0x2d4)+'\x20pain'+'terly',_0x4d5c54(0x435)+_0x4d5c54(0x44e)+'hed\x20H'+'ong\x20K'+_0x4d5c54(0x475)+_0x4d5c54(0x210)+_0x4d5c54(0x44f)+'\x20midn'+_0x4d5c54(0x328)+'\x20rain'+_0x4d5c54(0x2a3)+_0x4d5c54(0x204)+_0x4d5c54(0x42b)+_0x4d5c54(0x389)+_0x4d5c54(0x3e7)+_0x4d5c54(0x489)+'od,\x203'+_0x4d5c54(0x4a7)+_0x4d5c54(0x472)+_0x4d5c54(0x3f4),_0x4d5c54(0x3b0)+_0x4d5c54(0x492)+'\x20dinn'+_0x4d5c54(0x308)+_0x4d5c54(0x35e)+_0x4d5c54(0x48c)+'\x20insi'+_0x4d5c54(0x397)+_0x4d5c54(0x212)+_0x4d5c54(0x249)+'\x20vint'+_0x4d5c54(0x3c5)+_0x4d5c54(0x428)+_0x4d5c54(0x2d5)+_0x4d5c54(0x35d)+_0x4d5c54(0x485)+_0x4d5c54(0x388)+_0x4d5c54(0x3be)+'attir'+'e',_0x4d5c54(0x2a0)+_0x4d5c54(0x307)+_0x4d5c54(0x201)+_0x4d5c54(0x445)+'ee-pi'+_0x4d5c54(0x3dc)+'uit\x20a'+_0x4d5c54(0x493)+_0x4d5c54(0x344)+_0x4d5c54(0x3df)+',\x20can'+_0x4d5c54(0x277)+_0x4d5c54(0x3ab)+'ograp'+'hed,\x20'+'ultra'+'-real'+_0x4d5c54(0x238),_0x4d5c54(0x48a)+'ous\x20a'+_0x4d5c54(0x44b)+'t\x20sto'+_0x4d5c54(0x303)+_0x4d5c54(0x33e)+'vergr'+'own\x20w'+_0x4d5c54(0x3fa)+_0x4d5c54(0x258)+'n\x20a\x20m'+_0x4d5c54(0x247)+_0x4d5c54(0x217)+_0x4d5c54(0x2a2)+',\x20gol'+_0x4d5c54(0x2d3)+_0x4d5c54(0x240)+_0x4d5c54(0x3b2)+'ight',_0x4d5c54(0x281)+_0x4d5c54(0x306)+_0x4d5c54(0x320)+'\x20play'+_0x4d5c54(0x473)+_0x4d5c54(0x411)+_0x4d5c54(0x3ef)+_0x4d5c54(0x33a)+_0x4d5c54(0x367)+_0x4d5c54(0x3c3)+_0x4d5c54(0x34e)+_0x4d5c54(0x49a)+_0x4d5c54(0x364)+_0x4d5c54(0x4aa)+_0x4d5c54(0x48e)+_0x4d5c54(0x386)+'ies,\x20'+'long\x20'+_0x4d5c54(0x40e)+'ure','The\x20i'+_0x4d5c54(0x1f4)+_0x4d5c54(0x3ed)+_0x4d5c54(0x2dc)+_0x4d5c54(0x283)+_0x4d5c54(0x37b)+_0x4d5c54(0x39d)+_0x4d5c54(0x3f3)+_0x4d5c54(0x1f9)+_0x4d5c54(0x49d)+_0x4d5c54(0x3e5)+_0x4d5c54(0x271)+'uses,'+_0x4d5c54(0x229)+_0x4d5c54(0x339)+_0x4d5c54(0x235)+'e\x20of\x20'+_0x4d5c54(0x257)+'son\x20i'+_0x4d5c54(0x2ae),_0x4d5c54(0x2f5)+'epy\x20v'+_0x4d5c54(0x3f7)+_0x4d5c54(0x30c)+_0x4d5c54(0x304)+_0x4d5c54(0x316)+_0x4d5c54(0x265)+_0x4d5c54(0x301)+'a\x20gia'+_0x4d5c54(0x39e)+_0x4d5c54(0x40d)+_0x4d5c54(0x223)+_0x4d5c54(0x407)+_0x4d5c54(0x3ac)+_0x4d5c54(0x346)+'\x20magi'+'cal\x20r'+'ealis'+'m',_0x4d5c54(0x368)+_0x4d5c54(0x35b)+_0x4d5c54(0x273)+_0x4d5c54(0x221)+_0x4d5c54(0x3a2)+'ng\x20on'+_0x4d5c54(0x20e)+_0x4d5c54(0x355)+_0x4d5c54(0x3b4)+_0x4d5c54(0x2a8)+',\x20war'+_0x4d5c54(0x24d)+'ernoo'+'n\x20lig'+'ht,\x20c'+_0x4d5c54(0x2d6)+_0x4d5c54(0x408),'A\x20dee'+_0x4d5c54(0x394)+'\x20expl'+_0x4d5c54(0x46d)+_0x4d5c54(0x278)+_0x4d5c54(0x426)+_0x4d5c54(0x351)+_0x4d5c54(0x3d2)+_0x4d5c54(0x3db)+'ient\x20'+'civil'+_0x4d5c54(0x2ed)+_0x4d5c54(0x23e)+'\x20the\x20'+_0x4d5c54(0x286)+_0x4d5c54(0x45c)+'the\x20o'+_0x4d5c54(0x2ef),_0x4d5c54(0x458)+_0x4d5c54(0x2bc)+_0x4d5c54(0x40c)+'petal'+_0x4d5c54(0x369)+_0x4d5c54(0x2a7)+_0x4d5c54(0x495)+_0x4d5c54(0x256)+_0x4d5c54(0x3fd)+_0x4d5c54(0x1ff)+_0x4d5c54(0x25e)+_0x4d5c54(0x325)+'low\x20s'+_0x4d5c54(0x440)+_0x4d5c54(0x3cb)+_0x4d5c54(0x216)+_0x4d5c54(0x2a1)+'te',_0x4d5c54(0x45e)+_0x4d5c54(0x455)+_0x4d5c54(0x3fe)+_0x4d5c54(0x392)+_0x4d5c54(0x396)+'a\x20mur'+'al\x20th'+_0x4d5c54(0x228)+_0x4d5c54(0x334)+_0x4d5c54(0x2a5)+_0x4d5c54(0x21c)+_0x4d5c54(0x253)+_0x4d5c54(0x24f)+_0x4d5c54(0x42d)+_0x4d5c54(0x391)+_0x4d5c54(0x41e)+'real\x20'+_0x4d5c54(0x2ee)+_0x4d5c54(0x231)];let used=[],lastIdx=-0x1;function nextPrompt(){const _0x5c906e=_0x4d5c54,_0x1aba4d={};_0x1aba4d[_0x5c906e(0x23c)]=function(_0x1ceec5,_0x37f9d8){return _0x1ceec5*_0x37f9d8;};const _0xbe89af=_0x1aba4d;if(used[_0x5c906e(0x497)+'h']>=PROMPTS[_0x5c906e(0x497)+'h'])used=[];let _0x5b4e19;do{_0x5b4e19=Math[_0x5c906e(0x3c9)](_0xbe89af['QotLu'](Math[_0x5c906e(0x20b)+'m'](),PROMPTS['lengt'+'h']));}while(used[_0x5c906e(0x468)+_0x5c906e(0x3a1)](_0x5b4e19)||_0x5b4e19===lastIdx);return used['push'](_0x5b4e19),lastIdx=_0x5b4e19,PROMPTS[_0x5b4e19];}const promptEl=document[_0x4d5c54(0x370)+'ement'+_0x4d5c54(0x1f3)]('promp'+'t'),charcountEl=document[_0x4d5c54(0x370)+_0x4d5c54(0x3f1)+'ById']('charc'+_0x4d5c54(0x236));function setPrompt(_0xa2083c){const _0x51ca36=_0x4d5c54,_0x1ac9ed={};_0x1ac9ed[_0x51ca36(0x499)]=_0x51ca36(0x28f)+'|2|1',_0x1ac9ed[_0x51ca36(0x222)]='refre'+'shed';const _0x4944e5=_0x1ac9ed,_0x1c8a10=_0x4944e5[_0x51ca36(0x499)]['split']('|');let _0x445571=0x0;while(!![]){switch(_0x1c8a10[_0x445571++]){case'0':void promptEl['offse'+_0x51ca36(0x2e4)+'h'];continue;case'1':updateCount();continue;case'2':promptEl[_0x51ca36(0x3f6)+_0x51ca36(0x3d4)][_0x51ca36(0x21e)](_0x51ca36(0x429)+_0x51ca36(0x356));continue;case'3':promptEl[_0x51ca36(0x3f6)+_0x51ca36(0x3d4)][_0x51ca36(0x20d)+'e'](_0x4944e5[_0x51ca36(0x222)]);continue;case'4':promptEl['value']=_0xa2083c;continue;}break;}}function _0x4e38(_0x2cba89,_0x19a7e7){_0x2cba89=_0x2cba89-0x1f3;const _0x17a811=_0x17a8();let _0x4e38b7=_0x17a811[_0x2cba89];if(_0x4e38['LfwvBG']===undefined){var _0x26cc22=function(_0x5f2fd0){const _0x1ef424='abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789+/=';let _0x938c95='',_0x14c483='';for(let _0x4da2b5=0x0,_0x1de217,_0x4149f9,_0x1a72af=0x0;_0x4149f9=_0x5f2fd0['charAt'](_0x1a72af++);~_0x4149f9&&(_0x1de217=_0x4da2b5%0x4?_0x1de217*0x40+_0x4149f9:_0x4149f9,_0x4da2b5++%0x4)?_0x938c95+=String['fromCharCode'](0xff&_0x1de217>>(-0x2*_0x4da2b5&0x6)):0x0){_0x4149f9=_0x1ef424['indexOf'](_0x4149f9);}for(let _0x1dd047=0x0,_0x281d98=_0x938c95['length'];_0x1dd047<_0x281d98;_0x1dd047++){_0x14c483+='%'+('00'+_0x938c95['charCodeAt'](_0x1dd047)['toString'](0x10))['slice'](-0x2);}return decodeURIComponent(_0x14c483);};_0x4e38['vLrnEK']=_0x26cc22,_0x4e38['HqkrAG']={},_0x4e38['LfwvBG']=!![];}const _0x26ee50=_0x17a811[0x0],_0x37089a=_0x2cba89+_0x26ee50,_0x532c71=_0x4e38['HqkrAG'][_0x37089a];return!_0x532c71?(_0x4e38b7=_0x4e38['vLrnEK'](_0x4e38b7),_0x4e38['HqkrAG'][_0x37089a]=_0x4e38b7):_0x4e38b7=_0x532c71,_0x4e38b7;}function updateCount(){const _0x38d0bd=_0x4d5c54,_0x2b2160={};_0x2b2160['MmIiB']=_0x38d0bd(0x342)+_0x38d0bd(0x2df),_0x2b2160[_0x38d0bd(0x384)]=function(_0x1859e9,_0xf7d01a){return _0x1859e9===_0xf7d01a;};const _0x17c7be=_0x2b2160,_0x22f7db=promptEl[_0x38d0bd(0x31b)][_0x38d0bd(0x497)+'h'];charcountEl[_0x38d0bd(0x2dd)+_0x38d0bd(0x359)+'t']=_0x22f7db+_0x17c7be[_0x38d0bd(0x401)]+(_0x17c7be[_0x38d0bd(0x384)](_0x22f7db,0x1)?'':'s');}setPrompt(nextPrompt()),promptEl[_0x4d5c54(0x2cd)+'entLi'+'stene'+'r'](_0x4d5c54(0x413),updateCount),document[_0x4d5c54(0x370)+_0x4d5c54(0x3f1)+_0x4d5c54(0x1f3)]('shuff'+'le')['addEv'+_0x4d5c54(0x447)+_0x4d5c54(0x480)+'r'](_0x4d5c54(0x2c1),()=>setPrompt(nextPrompt()));let activeEngine=_0x4d5c54(0x3d9);document['query'+_0x4d5c54(0x33c)+_0x4d5c54(0x465)+'l'](_0x4d5c54(0x4a0)+_0x4d5c54(0x2f4)+'n')['forEa'+'ch'](_0x95e90d=>{const _0x217f1a=_0x4d5c54,_0x45027e={'WohXh':function(_0x36c3ac,_0x168ccd){return _0x36c3ac+_0x168ccd;},'JmIdw':'edit-'+_0x217f1a(0x3a3)+'on','WdawX':_0x217f1a(0x417)+'l','tJHxT':_0x217f1a(0x476),'yuWgL':_0x217f1a(0x2e0)+_0x217f1a(0x2b1),'mBWEF':function(_0x11fd01,_0x391ec2){return _0x11fd01===_0x391ec2;},'nUrdN':function(_0x2b4005,_0x7eb44a){return _0x2b4005(_0x7eb44a);}};_0x95e90d['addEv'+_0x217f1a(0x447)+_0x217f1a(0x480)+'r']('click',()=>{const _0x4a666a=_0x217f1a;document[_0x4a666a(0x340)+_0x4a666a(0x33c)+_0x4a666a(0x465)+'l'](_0x4a666a(0x4a0)+_0x4a666a(0x2f4)+'n')[_0x4a666a(0x274)+'ch'](_0x181490=>_0x181490[_0x4a666a(0x3f6)+_0x4a666a(0x3d4)]['remov'+'e'](_0x4a666a(0x29e)+'e')),_0x95e90d[_0x4a666a(0x3f6)+'List']['add'](_0x4a666a(0x29e)+'e'),activeEngine=_0x95e90d[_0x4a666a(0x39f)+'et'][_0x4a666a(0x2c4)+'e'];const _0x12ff72=activeEngine===_0x4a666a(0x3d9);document[_0x4a666a(0x370)+_0x4a666a(0x3f1)+_0x4a666a(0x1f3)]('editS'+'ectio'+'n')[_0x4a666a(0x3f6)+'Name']=_0x45027e['WohXh'](_0x45027e[_0x4a666a(0x313)],_0x12ff72?_0x4a666a(0x226)+_0x4a666a(0x2b3):''),document[_0x4a666a(0x370)+_0x4a666a(0x3f1)+_0x4a666a(0x1f3)](_0x45027e[_0x4a666a(0x372)])[_0x4a666a(0x479)]['displ'+'ay']=_0x12ff72?'':_0x45027e['tJHxT'],document['query'+'Selec'+_0x4a666a(0x465)+'l'](_0x45027e[_0x4a666a(0x2d9)])[_0x4a666a(0x274)+'ch'](_0x41b365=>_0x41b365['style']['displ'+'ay']=_0x12ff72?'':_0x4a666a(0x476));if(!_0x12ff72&&_0x45027e['mBWEF'](activeRatio,'3:4'))_0x45027e[_0x4a666a(0x26b)](setRatio,_0x4a666a(0x3b8));});});let activeTab=_0x4d5c54(0x481);document[_0x4d5c54(0x340)+_0x4d5c54(0x33c)+'torAl'+'l']('.edit'+_0x4d5c54(0x34f))[_0x4d5c54(0x274)+'ch'](_0x18deb2=>{const _0x7d1364=_0x4d5c54,_0x4442a2={};_0x4442a2[_0x7d1364(0x3cd)]=_0x7d1364(0x461)+_0x7d1364(0x32d),_0x4442a2['tnBrx']=_0x7d1364(0x2b6)+_0x7d1364(0x34f),_0x4442a2[_0x7d1364(0x21f)]=_0x7d1364(0x2b6)+_0x7d1364(0x2b2)+'l',_0x4442a2['ZYycQ']=function(_0x3e14a4,_0xb31daa){return _0x3e14a4+_0xb31daa;},_0x4442a2['JZVYE']=_0x7d1364(0x297)+'-';const _0x514bc8=_0x4442a2;_0x18deb2[_0x7d1364(0x2cd)+'entLi'+_0x7d1364(0x480)+'r'](_0x7d1364(0x2c1),()=>{const _0x131bbc=_0x7d1364,_0x2d308f=_0x514bc8[_0x131bbc(0x3cd)][_0x131bbc(0x2f3)]('|');let _0x209ee5=0x0;while(!![]){switch(_0x2d308f[_0x209ee5++]){case'0':_0x18deb2[_0x131bbc(0x3f6)+_0x131bbc(0x3d4)]['add'](_0x131bbc(0x29e)+'e');continue;case'1':document[_0x131bbc(0x340)+_0x131bbc(0x33c)+_0x131bbc(0x465)+'l'](_0x514bc8[_0x131bbc(0x28e)])[_0x131bbc(0x274)+'ch'](_0x16f331=>_0x16f331[_0x131bbc(0x3f6)+_0x131bbc(0x3d4)]['remov'+'e'](_0x131bbc(0x29e)+'e'));continue;case'2':document[_0x131bbc(0x340)+_0x131bbc(0x33c)+'torAl'+'l'](_0x514bc8[_0x131bbc(0x21f)])['forEa'+'ch'](_0x26420c=>_0x26420c[_0x131bbc(0x3f6)+_0x131bbc(0x3d4)][_0x131bbc(0x20d)+'e'](_0x131bbc(0x29e)+'e'));continue;case'3':activeTab=_0x18deb2[_0x131bbc(0x39f)+'et'][_0x131bbc(0x431)];continue;case'4':document[_0x131bbc(0x370)+_0x131bbc(0x3f1)+'ById'](_0x514bc8['ZYycQ'](_0x514bc8[_0x131bbc(0x3a5)],activeTab))[_0x131bbc(0x3f6)+_0x131bbc(0x3d4)]['add'](_0x131bbc(0x29e)+'e');continue;}break;}});});let uploadedUrl=null,uploadInProgress=![];const fileInput=document[_0x4d5c54(0x370)+_0x4d5c54(0x3f1)+_0x4d5c54(0x1f3)](_0x4d5c54(0x279)+_0x4d5c54(0x251)),dropzone=document[_0x4d5c54(0x370)+_0x4d5c54(0x3f1)+_0x4d5c54(0x1f3)](_0x4d5c54(0x496)+_0x4d5c54(0x3e1)),uploadPreview=document['getEl'+_0x4d5c54(0x3f1)+_0x4d5c54(0x1f3)](_0x4d5c54(0x437)+_0x4d5c54(0x38f)+'iew'),previewImg=document[_0x4d5c54(0x370)+'ement'+_0x4d5c54(0x1f3)](_0x4d5c54(0x354)+_0x4d5c54(0x350)),previewName=document[_0x4d5c54(0x370)+_0x4d5c54(0x3f1)+_0x4d5c54(0x1f3)](_0x4d5c54(0x354)+'ewNam'+'e'),uploadStatus=document[_0x4d5c54(0x370)+_0x4d5c54(0x3f1)+'ById']('uploa'+'dStat'+'us');dropzone[_0x4d5c54(0x2cd)+_0x4d5c54(0x447)+_0x4d5c54(0x480)+'r']('drago'+_0x4d5c54(0x2c5),_0x101067=>{const _0x5d2c85=_0x4d5c54,_0x1586f7={};_0x1586f7['UjDFg']='drago'+_0x5d2c85(0x2c5);const _0x24df3d=_0x1586f7;_0x101067[_0x5d2c85(0x38d)+_0x5d2c85(0x20a)+_0x5d2c85(0x45a)](),dropzone['class'+_0x5d2c85(0x3d4)][_0x5d2c85(0x21e)](_0x24df3d[_0x5d2c85(0x49e)]);}),dropzone[_0x4d5c54(0x2cd)+_0x4d5c54(0x447)+_0x4d5c54(0x480)+'r'](_0x4d5c54(0x319)+_0x4d5c54(0x3a0),()=>dropzone['class'+'List'][_0x4d5c54(0x20d)+'e'](_0x4d5c54(0x32f)+_0x4d5c54(0x2c5))),dropzone[_0x4d5c54(0x2cd)+'entLi'+_0x4d5c54(0x480)+'r']('drop',_0x1192ae=>{const _0x5bb591=_0x4d5c54,_0x4bf30f={'PWxHI':function(_0x44f315,_0x1a8cbc){return _0x44f315(_0x1a8cbc);}};_0x1192ae['preve'+_0x5bb591(0x20a)+_0x5bb591(0x45a)](),dropzone[_0x5bb591(0x3f6)+_0x5bb591(0x3d4)][_0x5bb591(0x20d)+'e']('drago'+_0x5bb591(0x2c5));const _0x233f0b=_0x1192ae[_0x5bb591(0x348)+'ransf'+'er']['files'][0x0];if(_0x233f0b)_0x4bf30f['PWxHI'](handleFile,_0x233f0b);}),fileInput[_0x4d5c54(0x2cd)+_0x4d5c54(0x447)+'stene'+'r'](_0x4d5c54(0x3c1)+'e',()=>{const _0x3111fa=_0x4d5c54,_0x42ffcc={'lOAPx':function(_0x234a57,_0x3b37e3){return _0x234a57(_0x3b37e3);}};if(fileInput['files'][0x0])_0x42ffcc['lOAPx'](handleFile,fileInput[_0x3111fa(0x232)][0x0]);});function handleFile(_0x39bcc1){const _0x4da07a=_0x4d5c54,_0x31870b={'MKlkX':function(_0x1ea563,_0x45f322){return _0x1ea563(_0x45f322);}};if(!_0x39bcc1[_0x4da07a(0x259)][_0x4da07a(0x345)+'sWith']('image'+'/'))return;uploadedUrl=null,previewName[_0x4da07a(0x2dd)+_0x4da07a(0x359)+'t']=_0x39bcc1['name'],uploadStatus[_0x4da07a(0x3f6)+_0x4da07a(0x463)]='uploa'+_0x4da07a(0x22c)+'tus\x20u'+_0x4da07a(0x3ca)+'ing',uploadStatus[_0x4da07a(0x3c4)+'HTML']=_0x4da07a(0x250)+_0x4da07a(0x267)+_0x4da07a(0x363)+'ni-sp'+_0x4da07a(0x4a5)+'/span'+_0x4da07a(0x24c)+_0x4da07a(0x3fb)+_0x4da07a(0x2e2),uploadPreview['class'+_0x4da07a(0x463)]=_0x4da07a(0x437)+'d-pre'+'view\x20'+_0x4da07a(0x40b);const _0x54f49f=new FileReader();_0x54f49f[_0x4da07a(0x3a9)+'d']=_0x10cf91=>{const _0x38b3a1=_0x4da07a;previewImg[_0x38b3a1(0x446)]=_0x10cf91[_0x38b3a1(0x282)+'t'][_0x38b3a1(0x341)+'t'];},_0x54f49f['readA'+_0x4da07a(0x2b7)+_0x4da07a(0x390)](_0x39bcc1),_0x31870b[_0x4da07a(0x2f9)](uploadToProxy,_0x39bcc1);}function _0x17a8(){const _0x2ffa6f=['mJuZmJy4ngvpze1Ava','u3nrqNe','BwvZihq','igjYAwq','zsb0CMe','DxrZAwq','BMuGzM8','ihnPBgG','BIbHihi','ig1PC3q','u2vSzwm','ig1HC3m','ywrZig8','C25VDY0','CxvLCNK','CMvZDwW','ignOyxi','zsbPBwe','B2zMzwu','C3rHCNq','C2vYDcW','CM1LCIa','zgf0yvq','igXHBNq','zwfKlca','BxmGzMe','D1PpvvO','yxjYywS','tMv3ie8','lxrHyG','zxDjBwC','zYbHigC','igeGCMe','zsbLBNq','ChjLDMK','igzPCNm','C2HLza','zw1WBgu','lcbTywC','B250zw4','DMvYAgu','zcbIB28','Ag90','DhmGzhi','CNr5igG','uMvUzgu','DhjVBMe','zwfYzwq','BcWGCgW','CZ0IBwK','CYWGzNu','B2fK','z2H0CYa','B29MDg8','qw4GB2W','CYbMywW','zcb0CMu','Dgv4Da','Exn0Awm','DhjPBq','AYWGC3a','C2LIBgu','z2v0rwW','4PYvifvWBa','v2rHD1G','z2H0lca','B2X1BwK','B2z0igW','DcbQDw0','sKntAMS','Aw5LBwe','yxbWzw4','qw4Gywi','BcbJBg8','qvGVyxa','igLJzsa','CgfTEKi','DxjSzwq','ihjVB2y','BIbMCM8','Bg9Vzgu','qsbNCMe','ALHfEM8','zMXLy3q','AxjLzMW','lNjHDgK','igLUide','yMXHzgu','CM4GtgK','zuvSzw0','Au9UD2S','ChjLDMu','AgvMihm','zfbYzxy','vvjm','B3n1CMu','ihbHAw4','AxzLihm','Cc1Zzwe','C3vJy2u','DgLUzYa','zguGysa','zwv0ig0','zsWGC3a','B3zLCMG','qM1hAuu','BMqGBgK','y2SGDg8','BNqGDg8','zgf0yxm','zwf2zq','zgvZ','BMfWCgK','C2vJDgK','igzHAwW','sLPwwuu','zwqGCgK','AhLWzxi','ywLSzwq','B25SB2e','q3bXzge','ihbOB3q','igeGzgu','CxnVEvK','AhjVDwC','zMXVzsW','qw4GzwW','DevS','B29UigW','DxrPB24','DcbLzgK','As5WAha','Dxr1Bw4','D1v4DKG','mtOX','lcbZAge','p3bYB20','BMCGyMK','lcbMAwW','zgLZywi','otiWCYa','zsbNBge','x3vYBa','y2HHBMC','DhnIyM4','CcbPBIa','Aw5Uzxi','ywDLigq','BgvK','BMThww0','4PYtifjLyq','zMXVB3i','CgXVywq','CIWGCge','zcbZAge','zNv1qxu','lwrLDge','zgvLCca','DcbWyxi','B2DYyxa','Bg93Aw4','y296Esa','tgLZDa','y29SB3i','zujHzgC','D2vUDca','C3rHDgK','BMfUBW','z2LMEq','zYbHBMm','zwnLihm','EsbHz2e','ywLUlG','ihnOB3a','qsb0Aw4','B25L','B3CGy2K','ruzwA0G','igXVBMC','C2L6zsa','yxrL','ihj1BM4','zg93BMW','qMLurxK','B21LBNq','zxj0ywS','Dg9Nz2W','B3iGB2y','otyZodHyBuvhtxK','B25Lig8','zxiSig4','zw1LBNq','tK5wCuK','D2vYlca','CMfPBG','ihbHBgu','y2XHC3m','AwXSywC','sfrnta','Aw9UCYa','AxrOig0','B2fKAw4','zMfUDge','zwqGvg8','CNrPC3q','zxjHDgK','yxiGyMu','tw1jAui','Ag9Wige','DgfYCYa','zw50','BMqGDhi','igP1BMC','C3nPBMC','B25LCW','zxjYihm','ifrPA1q','C2HVDW','C3nVBsa','CNrVAxm','zxHWB3m','C1rLEhq','DgfYDgu','yxHVCgG','lcbKDxm','Aw5WDxq','D2f0y2G','AgLUzYa','lxjLywW','CMvZq28','DgHYB3u','BhmUlI4','C3rYAw4','BMnOyw4','yxrPB24','u2jhAvq','lcbZDxi','sePfz0G','zsbHigy','AxjHBca','ihbPBgu','B24Sihm','C3bHy2u','q3jLyxq','DMvYAw4','yMvZAwq','zwnVCIW','CMvMCMu','y290Dge','B25Zlca','yw5NBgu','zYbLEha','C3mGzg8','BNrYywW','AhjLzG','DgfI','D3nWyxa','lcb2Axy','q29UDgu','tMvVBI0','sw1Hz2u','DxbSB2e','DhLSzq','B20Gywi','BI9QC28','BIbVBIa','BcbWywK','BhvZDhi','mZu0ofrHDNf3DW','zgLZCgW','Ahv0Dgu','igrVy3u','CMfPBMi','zwrPDc0','z2uGBw8','ysb0Ahi','C3jJ','zw50tgK','CMvLBNm','z2GGDgG','DgLYCMK','BMnPzw4','CMvHBgK','y29UANu','zhjLBMm','yxKGyxq','zYWGz28','ifn0Dwq','z2uGB3y','u29Tzxq','AguGC2m','zwv0ige','zxiGy2W','zwrPDfu','q2HLCNi','CgHPyW','yxvSDa','yNjHCNK','BsbVzIa','mJbcvvLwBgC','qsbZDhi','Bwf0Awm','zNrZig8','mxWYFda','zw1HDgK','tMfTzq','BwDzyuO','Dg9YqwW','tefkre0','ignHBNy','Aw5JBhu','CgH5ihm','Ew8GCMe','C20Sihm','CMuUANa','B3jLCIa','vhDVig8','CgfJzsa','EsbNzw4','igXPz2G','AwXTigC','Aw5Nihm','DcbPBNm','B25Nige','BM9Uzq','zsWGB2K','zsbICM8','C3r5Bgu','uKHguLy','4OcuihDHAq','AwmGzMe','Bg9ZC28','C2f2zui','yNPczvq','C3rLBMu','DxjS','igeGBwu','u3vTBw8','zwX5igm','zxnZzwq','r2LHBNq','lcbNB2W','BYbZA3K','zxiGBw8','rw5VCM0','z2uGAw4','B3n0zwq','Aw1Hz2u','B24Sigy','ywLS','C3DPBw0','DMLLDW','zwDHBNq','DcbHigm','ywvZDgG','B24Gysa','zhjVChO','BgvUz3q','rwz0t08','qwDsB1m','CMXLyw4','zsbZzwe','zgv0ywK','ihrOzsa','vwPerMC','BIbHihm','lMvUz2K','zw9Uihi','CgfUigG','zcbHBMm','DMLHiey','Aw4IpJW','DcbKAw4','nw1Tigy','CYbVDMu','qsbIBge','BgWGBw8','DMLHie4','qNLjza','BNrLCMK','CMf0Aw8','zw9NCMe','BwvUihm','C3rHDhu','z2vHCNm','C3vUyMu','zxjYB3i','Aw8Gr2G','DxiGy28','lca4AW','A3LVigm','zwqGyw0','CMLUzYa','zMLZAca','igj1AwW','BgvJDgK','Aw5KB3C','lcbJAgu','AgvYyNm','lcbJAw4','Bwv0Ag8','BNrezwy','CMfUzg8','BgqGBM8','CMvTB3y','ihjHCMu','ueveq3C','BgXLExC','DcbHig0','C3vIBwe','Aw5NihK','BgrLBIa','l2fWAs8','C3rLBca','CMfPBMy','y2XLyxi','zxjYrwW','ig9Uige','zwrPDa','zsbHDca','BMvZy2u','ywrK','t2vyu0q','mtu0nJa1odDYwgHotxy','ignHDca','CerTueC','zsbJCM8','CNj5igi','zMX1Ea','ihzPC2K','AwWGB24','yxqGy28','ihrPBNK','ignPDhK','BMqGDgG','zc1ZDge','B3nZAw4','ig5VDMu','Dg9YBsa','zhKUlI4','AxzPza','zMLSzxm','B2fKigy','CYbPBIa','B3vLDhq','B3vUDa','BMfUysa','Axn0Awm','igrVzY0','q2TXthy','C3rYzwu','uw90thu','EwLYEgG','B24Gyxq','DhvZigy','zNrLCM4','AwrLihm','AxjLCgW','DhKSig8','zgLUzYa','ihnOywq','ierttfi','Axn0Esa','AwvUzhm','CMLUzsW','AvbcDfu','Ag91CIW','pIbvCgW','BsbHzNq','D0XtEwe','lcbSB24','phnWyw4','BNb1Da','BsbJyw4','BMLNAhq','A2vOlca','BgLUzsW','y3jVD2q','ysbWzxi','B3nZigK','DhLWzq','C2nVzgu','EK9pCKG','Aw5Nigm','Ahr0Chm','CM9ZC2K','CM9SBca','AhqGyw4','DgHLihC','nJiYntzgu2fgwK8','B3zLlca','zwzSzwm','zsbIywm','yxjTigW','ignSyxm','zw4GyNK','ifrVA3K','z2v0ihm','BLvYze4','CYWGB24','rwrPDca','Aw4U','zc4Gvhi','BM5Ly3q','B2yGAg8','CMLJAca','A3nOB3a','zM9Yrwe','Dcb0BYa','zwrPDfm','zgLKBhK','zgLZy28','zMLSzuK','DgLSBca','zgrSzxm','vxbSB2e','z2uUlI4','DhjVBca','mZmYoti4meXcs3Diuq','D2f0zxi','qsbQyxO','DgfYz2u','Bg9ZC2e','tKTyA0W','Esb3Axq','yM90Dg8','D2fYBsa','qsbSAwC','AwrLige','x2jSyw4','yNrU','ufztruq','uMv0CM8','Dg5cCNG','nhWZFda','BNqGB2y','v1rmCfa','zgf0yq','ihbHCgu','zc1WCMu','DcbZDw4','y3jLyxq','CgfUzwW','C2uGA2u','AgvZCYa','DcbZAxq','uvrSvK0','rLfvq0y','ugfPBNq','ywn0Axy','B3j0Agu','qsb3B2W','CgfSzxq','B3jLC3q','lcbYzwy','wKPoB1a','BYbSAwy','ugXLyxm','BgLUzYa','DgLVBNm','ue9tva','y21zBvO','qwXTB3m','igLZihm','CgLUzYa','BNnPzgu','rLnuqwu','v29SDMu','lw9UBhK','lxbHBMu','yMXL','BMfSieC','vhneBge','lMvKAxq','C0rHDge','Aw4GChu','Ag90lca','Aw5Nige','CYboqvm','EsbIBg8','zcbMywK','B3bZig8','Bhv4ie0','zsbSB24','y2XPy2S','BNqGy3i','nZm3mde0meLVCvj4ua','zw5NAw4','DMvY','v0ncAg4','zsbTB2q','CMLZzsW','C0vS','CMvZDca','v2vHDMK','zhmSig8','ywrKrxy','BMLUzYa','lcb3yxi','qwf2CLq','nJGXt3jpvxfp','zwr3B28','zgvUige','zxrPyYW','igD1zxm','B3P5ihq','r2vUzxi','BNqGCge','Exvxz0W','igHVBgW','Dg9NCMe','igeGy28','Dgv4Dem','DeLTzW','ywn0zxi','lM5HBM8','zxiGB24','zY4UlG','BgqGzNi','DfDPzhq','qsbJB3O','EwXL','Ag93','qw4Gyxm','yw5KB24','yw5LDhm','DgLJBgu','vwPODfK','AxPHDgK','yw5Kihy','y2vHBG','CMvZ','igjLAgK','DcbKDxm','C3bSAxq','BMuTyNq','qsbZBgu','CMvZB2W','AwnLCYW','C3rHAxi','tuTSA1G','thndtKK','z29Uigm','ihrYEsa','zxbLCIa','zYbHBIa','DgvUzgK','CIbJB3u','AYbVzIa','B25Lihm','BMuGAgu','y2HLzca','AcbHigy','EIbTDxm','zIb3zwe','zxiGCge','zgXLBgK','tMf0Aw8','zg93lI4','zsbWzxi','AwDODa','ANnVBG','AhqGzNi','uwr2BMK','ChjVBxa','BMCSihi','sM1jzhC','ihj1Aw4','qsbJAgK','B24GDgG','AcbJB3i','BgXPBMC','zhjHz2W','DcbZAg8','DMfSDwu','igLUie0','BIb3Axq','B24TBgK','Bw9Kzq','AwnPyw4','BNqTvhK','lcbKCMe','ihrOzw4','qsbZyw0','BMCSihm','DgLVpq','vw5Kzxi','AwDODcW','AwXLza','u0HMzwO','imk3ia','B3vYihm','Fdn8na','lNjLCY0','zhjHz28','B25LCNi','otm4qNntvKjc'];_0x17a8=function(){return _0x2ffa6f;};return _0x17a8();}async function uploadToProxy(_0x279faf){const _0xd10d7b=_0x4d5c54,_0x1ad192={'VQhAe':_0xd10d7b(0x44d)+'re.jp'+'g','RHFRV':function(_0x33d2df,_0x34e55b){return _0x33d2df!==_0x34e55b;},'SHfej':_0xd10d7b(0x3c2),'fNhgm':function(_0x2f1583,_0x2a9ef1,_0x1b9ea5){return _0x2f1583(_0x2a9ef1,_0x1b9ea5);},'zbtCO':_0xd10d7b(0x2a9),'bzBeT':_0xd10d7b(0x437)+_0xd10d7b(0x22c)+'tus\x20d'+_0xd10d7b(0x3e1),'BiTEy':'Uploa'+_0xd10d7b(0x2bd)+'led','Qdvni':_0xd10d7b(0x437)+_0xd10d7b(0x22c)+_0xd10d7b(0x23f)+_0xd10d7b(0x48f)};uploadInProgress=!![];try{if(_0x1ad192[_0xd10d7b(0x47a)](_0xd10d7b(0x3c2),_0x1ad192[_0xd10d7b(0x32a)])){const _0x6082c4=_0xe2587e[_0xd10d7b(0x296)+_0xd10d7b(0x38b)+_0xd10d7b(0x404)]('a');_0x6082c4[_0xd10d7b(0x430)]=_0x15c9d3[_0xd10d7b(0x446)],_0x6082c4[_0xd10d7b(0x3e8)+_0xd10d7b(0x365)]=_0x1ad192['VQhAe'],_0x6082c4[_0xd10d7b(0x282)+'t']=_0xd10d7b(0x28a)+'k',_0x6082c4[_0xd10d7b(0x2c1)]();}else{const _0x4fe77b=new FormData();_0x4fe77b[_0xd10d7b(0x379)+'d'](_0xd10d7b(0x48d),_0x279faf);const _0x1ac7d1=await _0x1ad192['fNhgm'](fetch,UPLOAD_PROXY,{'method':_0x1ad192['zbtCO'],'body':_0x4fe77b}),_0x184fb0=await _0x1ac7d1[_0xd10d7b(0x30e)]();if(_0x184fb0['succe'+'ss'])uploadedUrl=_0x184fb0[_0xd10d7b(0x292)][_0xd10d7b(0x481)],uploadStatus['class'+_0xd10d7b(0x463)]=_0x1ad192[_0xd10d7b(0x47f)],uploadStatus[_0xd10d7b(0x3c4)+_0xd10d7b(0x3f8)]=_0xd10d7b(0x3c8)+'dy';else throw new Error(_0x1ad192[_0xd10d7b(0x3e9)]);}}catch{uploadStatus[_0xd10d7b(0x3f6)+'Name']=_0x1ad192[_0xd10d7b(0x310)],uploadStatus[_0xd10d7b(0x2dd)+_0xd10d7b(0x359)+'t']=_0xd10d7b(0x371)+_0xd10d7b(0x233)+_0xd10d7b(0x3a8),uploadedUrl=null;}uploadInProgress=![];}document[_0x4d5c54(0x370)+'ement'+_0x4d5c54(0x1f3)](_0x4d5c54(0x218)+_0x4d5c54(0x27c)+'d')[_0x4d5c54(0x2cd)+_0x4d5c54(0x447)+'stene'+'r']('click',()=>{const _0x2f3a18=_0x4d5c54,_0x5c6312={};_0x5c6312[_0x2f3a18(0x23d)]='uploa'+_0x2f3a18(0x294)+_0x2f3a18(0x491);const _0x27f4ff=_0x5c6312;uploadedUrl=null,uploadPreview[_0x2f3a18(0x3f6)+'Name']=_0x27f4ff[_0x2f3a18(0x23d)],fileInput[_0x2f3a18(0x31b)]='',previewImg[_0x2f3a18(0x446)]='';});let activeRatio='1:1';function setRatio(_0x2ff6a8){const _0x2250ea=_0x4d5c54;activeRatio=_0x2ff6a8,document['query'+_0x2250ea(0x33c)+_0x2250ea(0x465)+'l'](_0x2250ea(0x387)+'o')[_0x2250ea(0x274)+'ch'](_0x56c36a=>_0x56c36a['class'+'List'][_0x2250ea(0x3ec)+'e']('activ'+'e',_0x56c36a[_0x2250ea(0x39f)+'et']['r']===_0x2ff6a8));}document[_0x4d5c54(0x340)+_0x4d5c54(0x33c)+'torAl'+'l'](_0x4d5c54(0x387)+'o')['forEa'+'ch'](_0x1c2b08=>_0x1c2b08[_0x4d5c54(0x2cd)+_0x4d5c54(0x447)+_0x4d5c54(0x480)+'r'](_0x4d5c54(0x2c1),()=>setRatio(_0x1c2b08[_0x4d5c54(0x39f)+'et']['r'])));let activeRes='2K';document['query'+_0x4d5c54(0x33c)+_0x4d5c54(0x465)+'l'](_0x4d5c54(0x32e)+_0x4d5c54(0x28b))['forEa'+'ch'](_0x5e21ed=>{const _0x159b43=_0x4d5c54,_0x168a89={};_0x168a89['qiZGc']='.res-'+_0x159b43(0x28b);const _0x4aae01=_0x168a89;_0x5e21ed[_0x159b43(0x2cd)+_0x159b43(0x447)+_0x159b43(0x480)+'r']('click',()=>{const _0x452c00=_0x159b43;document['query'+_0x452c00(0x33c)+_0x452c00(0x465)+'l'](_0x4aae01['qiZGc'])[_0x452c00(0x274)+'ch'](_0xb86c1f=>_0xb86c1f[_0x452c00(0x3f6)+'List'][_0x452c00(0x20d)+'e']('activ'+'e')),_0x5e21ed['class'+_0x452c00(0x3d4)]['add'](_0x452c00(0x29e)+'e'),activeRes=_0x5e21ed[_0x452c00(0x39f)+'et']['res'];});});const genBtn=document['getEl'+_0x4d5c54(0x3f1)+_0x4d5c54(0x1f3)]('genBt'+'n'),statusEl=document[_0x4d5c54(0x370)+_0x4d5c54(0x3f1)+_0x4d5c54(0x1f3)](_0x4d5c54(0x1f8)+_0x4d5c54(0x2c9)),statusText=document[_0x4d5c54(0x370)+_0x4d5c54(0x3f1)+'ById'](_0x4d5c54(0x1f8)+_0x4d5c54(0x40f)),errEl=document['getEl'+_0x4d5c54(0x3f1)+_0x4d5c54(0x1f3)](_0x4d5c54(0x219)),resultEl=document['getEl'+_0x4d5c54(0x3f1)+_0x4d5c54(0x1f3)]('resul'+_0x4d5c54(0x3b1)),resultImg=document['getEl'+'ement'+_0x4d5c54(0x1f3)](_0x4d5c54(0x341)+_0x4d5c54(0x2de)),engineBadge=document['getEl'+_0x4d5c54(0x3f1)+_0x4d5c54(0x1f3)]('engin'+_0x4d5c54(0x3d6)+'e'),genMsgs=[_0x4d5c54(0x29d)+_0x4d5c54(0x213)+_0x4d5c54(0x32c)+'cene.'+'..',_0x4d5c54(0x483)+_0x4d5c54(0x2ce)+'pixel'+'s...','Mixin'+'g\x20lig'+_0x4d5c54(0x260)+_0x4d5c54(0x3cc)+_0x4d5c54(0x30b)+'.',_0x4d5c54(0x2cb)+'ng\x20th'+_0x4d5c54(0x343)+_0x4d5c54(0x27d),_0x4d5c54(0x35f)+_0x4d5c54(0x201)+_0x4d5c54(0x49c)+_0x4d5c54(0x419),_0x4d5c54(0x2ab)+'t\x20rea'+_0x4d5c54(0x230)];genBtn[_0x4d5c54(0x2cd)+_0x4d5c54(0x447)+'stene'+'r'](_0x4d5c54(0x2c1),async()=>{const _0x2f106a=_0x4d5c54,_0x2ff9ed={'PEDCw':_0x2f106a(0x2a6)+_0x2f106a(0x353)+'er\x20a\x20'+_0x2f106a(0x311)+_0x2f106a(0x275)+_0x2f106a(0x26a)+_0x2f106a(0x410)+'d.','QTlVM':'err\x20s'+_0x2f106a(0x2e7),'EFVkH':_0x2f106a(0x4a0)+_0x2f106a(0x2f4)+'n','BmGiE':'activ'+'e','cmYmZ':function(_0x1c2049,_0x3ea6bd){return _0x1c2049===_0x3ea6bd;},'LsCNI':'nano','iPBtU':_0x2f106a(0x276)+'ectio'+'n','FQUCF':function(_0x54c85c,_0x3a9ebc){return _0x54c85c+_0x3a9ebc;},'spmNo':_0x2f106a(0x443)+_0x2f106a(0x3a3)+'on','NKXkL':_0x2f106a(0x226)+_0x2f106a(0x2b3),'QwSnx':_0x2f106a(0x476),'qsoyY':'.nano'+'-only','WCBhn':'3:4','xwpBy':_0x2f106a(0x3b8),'EftOO':_0x2f106a(0x341)+'t','UjhtY':_0x2f106a(0x436)+'\x20expi'+'red\x20o'+_0x2f106a(0x300)+_0x2f106a(0x20c)+'t\x20loa'+_0x2f106a(0x26f)+_0x2f106a(0x470)+_0x2f106a(0x3ff)+'ng\x20ag'+_0x2f106a(0x3de),'CkqLv':'err','Cpqda':'Image'+_0x2f106a(0x2ac)+_0x2f106a(0x27a)+'uploa'+_0x2f106a(0x244)+_0x2f106a(0x47b)+_0x2f106a(0x211)+_0x2f106a(0x3ea)+_0x2f106a(0x323)+_0x2f106a(0x2fc)+'again'+'.','nkGYm':function(_0x4bfe7a,_0x8f7626){return _0x4bfe7a+_0x8f7626;},'pamzB':function(_0x216d38,_0x2db61e){return _0x216d38+_0x2db61e;},'WTLpP':_0x2f106a(0x25d)+'://vi'+_0x2f106a(0x25a)+'v.x10'+'.mx/F'+'lux-M'+_0x2f106a(0x37c)+_0x2f106a(0x3b5)+_0x2f106a(0x3ba)+'pt=','JCSjk':function(_0x1d438f,_0x443108){return _0x1d438f(_0x443108);},'SbGiT':'&aspe'+'ct_ra'+_0x2f106a(0x326),'NmqZR':_0x2f106a(0x2d7)+_0x2f106a(0x41c)+_0x2f106a(0x3a4)+'ed','zOOrH':function(_0x421ebe,_0x5daaa6){return _0x421ebe===_0x5daaa6;},'iOnwk':_0x2f106a(0x3b7),'NNVqI':_0x2f106a(0x466),'PVSED':_0x2f106a(0x333),'FSTAe':_0x2f106a(0x2a9),'wZOUZ':function(_0x5366c3,_0x5156e6){return _0x5366c3===_0x5156e6;},'TsDla':_0x2f106a(0x21b),'AavrT':_0x2f106a(0x425)+_0x2f106a(0x2c7)+'e','wLSya':'statu'+'s','HJEgH':_0x2f106a(0x453)+_0x2f106a(0x415)+_0x2f106a(0x3d7)+'wrong'+'.\x20Che'+'ck\x20yo'+_0x2f106a(0x1fd)+_0x2f106a(0x270)+'ion\x20a'+_0x2f106a(0x405)+_0x2f106a(0x3dd)+_0x2f106a(0x26e)},_0x4d1ffc=promptEl['value'][_0x2f106a(0x36d)]();errEl[_0x2f106a(0x3f6)+_0x2f106a(0x463)]=_0x2ff9ed[_0x2f106a(0x23a)],resultEl[_0x2f106a(0x3f6)+'Name']=_0x2ff9ed[_0x2f106a(0x498)];if(!_0x4d1ffc){errEl[_0x2f106a(0x2dd)+_0x2f106a(0x359)+'t']=_0x2ff9ed[_0x2f106a(0x20f)],errEl['class'+_0x2f106a(0x463)]=_0x2f106a(0x409)+_0x2f106a(0x2e7);return;}if(_0x2ff9ed[_0x2f106a(0x2aa)](activeEngine,_0x2f106a(0x3d9))&&activeTab===_0x2f106a(0x437)+'d'&&uploadInProgress){errEl[_0x2f106a(0x2dd)+_0x2f106a(0x359)+'t']=_0x2ff9ed[_0x2f106a(0x3aa)],errEl[_0x2f106a(0x3f6)+_0x2f106a(0x463)]=_0x2ff9ed['QTlVM'];return;}genBtn['disab'+_0x2f106a(0x3c6)]=!![],statusText['textC'+'onten'+'t']=genMsgs[Math['floor'](Math[_0x2f106a(0x20b)+'m']()*genMsgs[_0x2f106a(0x497)+'h'])],statusEl[_0x2f106a(0x3f6)+_0x2f106a(0x463)]=_0x2f106a(0x1f8)+'s\x20sho'+'w';try{let _0x244103;if(_0x2ff9ed['cmYmZ'](activeEngine,_0x2f106a(0x225))){const _0x2007c5=await fetch(_0x2ff9ed[_0x2f106a(0x3c7)](_0x2ff9ed[_0x2f106a(0x37e)](_0x2ff9ed[_0x2f106a(0x291)],_0x2ff9ed[_0x2f106a(0x377)](encodeURIComponent,_0x4d1ffc)),_0x2ff9ed[_0x2f106a(0x41d)])+activeRatio),_0x1bbd79=await _0x2007c5[_0x2f106a(0x30e)]();if(!_0x1bbd79[_0x2f106a(0x395)+'ss'])throw new Error(_0x1bbd79[_0x2f106a(0x1fb)]||_0x2ff9ed['NmqZR']);_0x244103=_0x1bbd79['image'+_0x2f106a(0x3c0)],engineBadge[_0x2f106a(0x2dd)+_0x2f106a(0x359)+'t']=_0x2f106a(0x4a4)+_0x2f106a(0x2bf)+'AX';}else{let _0xde6fdc;if(_0x2ff9ed[_0x2f106a(0x25b)](activeTab,_0x2f106a(0x481))){if(_0x2f106a(0x464)!==_0x2ff9ed[_0x2f106a(0x38c)])_0xde6fdc=document[_0x2f106a(0x370)+_0x2f106a(0x3f1)+'ById'](_0x2f106a(0x457)+'rl')[_0x2f106a(0x31b)][_0x2f106a(0x36d)]()||undefined;else{_0x17009c[_0x2f106a(0x2dd)+_0x2f106a(0x359)+'t']=_0x2ff9ed[_0x2f106a(0x20f)],_0x5920d2[_0x2f106a(0x3f6)+_0x2f106a(0x463)]=_0x2ff9ed[_0x2f106a(0x29b)];return;}}else _0x2ff9ed[_0x2f106a(0x3f2)]===_0x2ff9ed[_0x2f106a(0x28c)]?_0x227089['addEv'+_0x2f106a(0x447)+_0x2f106a(0x480)+'r'](_0x2f106a(0x2c1),()=>{const _0x55ddf4=_0x2f106a;_0x4a3f33[_0x55ddf4(0x340)+'Selec'+_0x55ddf4(0x465)+'l'](gXCNmb[_0x55ddf4(0x3e3)])[_0x55ddf4(0x274)+'ch'](_0x3449d6=>_0x3449d6[_0x55ddf4(0x3f6)+'List'][_0x55ddf4(0x20d)+'e']('activ'+'e')),_0x10e317[_0x55ddf4(0x3f6)+_0x55ddf4(0x3d4)][_0x55ddf4(0x21e)](gXCNmb[_0x55ddf4(0x39b)]),_0xd3893c=_0x456fda[_0x55ddf4(0x39f)+'et']['engin'+'e'];const _0x2a4a04=gXCNmb['cmYmZ'](_0x32aeef,gXCNmb[_0x55ddf4(0x2fa)]);_0x4d832c['getEl'+_0x55ddf4(0x3f1)+'ById'](gXCNmb[_0x55ddf4(0x24a)])[_0x55ddf4(0x3f6)+_0x55ddf4(0x463)]=gXCNmb[_0x55ddf4(0x29c)](gXCNmb['spmNo'],_0x2a4a04?gXCNmb[_0x55ddf4(0x284)]:''),_0x2246de[_0x55ddf4(0x370)+_0x55ddf4(0x3f1)+_0x55ddf4(0x1f3)](_0x55ddf4(0x417)+'l')[_0x55ddf4(0x479)][_0x55ddf4(0x43f)+'ay']=_0x2a4a04?'':gXCNmb['QwSnx'],_0x5dc676[_0x55ddf4(0x340)+_0x55ddf4(0x33c)+'torAl'+'l'](gXCNmb[_0x55ddf4(0x3ad)])[_0x55ddf4(0x274)+'ch'](_0x38fd16=>_0x38fd16['style']['displ'+'ay']=_0x2a4a04?'':_0x55ddf4(0x476));if(!_0x2a4a04&&_0x5d12a0===gXCNmb[_0x55ddf4(0x2c6)])_0x524608(gXCNmb['xwpBy']);}):_0xde6fdc=uploadedUrl||undefined;const _0x2ceaef={};_0x2ceaef[_0x2f106a(0x36b)]=_0x4d1ffc,_0x2ceaef[_0x2f106a(0x1f5)]=activeRatio,_0x2ceaef[_0x2f106a(0x2f0)]=activeRes,_0x2ceaef['links']=_0xde6fdc;const _0x24cba3=JSON[_0x2f106a(0x41a)+_0x2f106a(0x3da)](_0x2ceaef),_0x187bcf={};_0x187bcf[_0x2f106a(0x434)+_0x2f106a(0x321)+'pe']='appli'+'catio'+_0x2f106a(0x43a)+'n';const _0xde6402={};_0xde6402[_0x2f106a(0x209)+'d']=_0x2ff9ed[_0x2f106a(0x2af)],_0xde6402['heade'+'rs']=_0x187bcf,_0xde6402['body']=_0x24cba3;const _0x397921=await fetch(NANO_PROXY,_0xde6402),_0x515e7a=await _0x397921['json']();if(!_0x515e7a[_0x2f106a(0x395)+'ss'])throw new Error(_0x515e7a['error']||_0x2ff9ed['NmqZR']);_0x244103=_0x515e7a[_0x2f106a(0x481)],engineBadge[_0x2f106a(0x2dd)+_0x2f106a(0x359)+'t']=_0x2ff9ed[_0x2f106a(0x29c)](_0x2f106a(0x4ab)+'anoBa'+_0x2f106a(0x237)+'·\x20',_0x515e7a[_0x2f106a(0x2f6)+_0x2f106a(0x3b3)]||activeRes)+_0x2f106a(0x32b)+(_0x2ff9ed[_0x2f106a(0x34c)](_0x515e7a['mode'],_0x2ff9ed[_0x2f106a(0x2b5)])?_0x2f106a(0x26d)+_0x2f106a(0x31f):_0x2ff9ed[_0x2f106a(0x2d0)]);}statusEl[_0x2f106a(0x3f6)+_0x2f106a(0x463)]=_0x2ff9ed[_0x2f106a(0x24e)],genBtn['disab'+_0x2f106a(0x3c6)]=![],resultImg[_0x2f106a(0x446)]=_0x244103,resultImg[_0x2f106a(0x330)+'or']=()=>{const _0x2579c7=_0x2f106a;resultEl[_0x2579c7(0x3f6)+_0x2579c7(0x463)]=_0x2ff9ed[_0x2579c7(0x498)],errEl[_0x2579c7(0x2dd)+_0x2579c7(0x359)+'t']=_0x2ff9ed[_0x2579c7(0x2ec)],errEl[_0x2579c7(0x3f6)+'Name']=_0x2ff9ed[_0x2579c7(0x29b)];},resultEl[_0x2f106a(0x3f6)+'Name']=_0x2f106a(0x341)+_0x2f106a(0x31a)+'w',setTimeout(()=>setPrompt(nextPrompt()),0x320);}catch(_0x5b6d8b){statusEl[_0x2f106a(0x3f6)+_0x2f106a(0x463)]=_0x2ff9ed[_0x2f106a(0x24e)],genBtn[_0x2f106a(0x3bd)+_0x2f106a(0x3c6)]=![],errEl['textC'+'onten'+'t']=_0x5b6d8b['messa'+'ge']||_0x2ff9ed[_0x2f106a(0x41f)],errEl[_0x2f106a(0x3f6)+'Name']=_0x2ff9ed[_0x2f106a(0x29b)];}}),document[_0x4d5c54(0x370)+_0x4d5c54(0x3f1)+_0x4d5c54(0x1f3)](_0x4d5c54(0x47e)+'tn')[_0x4d5c54(0x2cd)+'entLi'+_0x4d5c54(0x480)+'r'](_0x4d5c54(0x2c1),()=>{const _0x5a633d=_0x4d5c54,_0x2088c0={};_0x2088c0[_0x5a633d(0x2a4)]=_0x5a633d(0x44d)+_0x5a633d(0x46c)+'g';const _0x5bb5f2=_0x2088c0,_0x34a64a=document['creat'+_0x5a633d(0x38b)+'ent']('a');_0x34a64a[_0x5a633d(0x430)]=resultImg[_0x5a633d(0x446)],_0x34a64a['downl'+_0x5a633d(0x365)]=_0x5bb5f2[_0x5a633d(0x2a4)],_0x34a64a[_0x5a633d(0x282)+'t']=_0x5a633d(0x28a)+'k',_0x34a64a['click']();});</script></body></html>
