@@ -1,0 +1,30 @@
+export const config = { api: { bodyParser: { sizeLimit: '1mb' } } };
+
+export default async function handler(req, res) {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+
+  if (req.method === 'OPTIONS') return res.status(200).end();
+  if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
+
+  try {
+    const { image_url, prompt } = req.body;
+
+    if (!image_url || !prompt) {
+      return res.status(400).json({ success: false, error: 'image_url and prompt are required' });
+    }
+
+    const response = await fetch('https://viscodev.x10.mx/im_editing/api.php', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ image_url, prompt })
+    });
+
+    const data = await response.json();
+    return res.status(200).json(data);
+
+  } catch (err) {
+    return res.status(500).json({ success: false, error: 'Morph proxy error: ' + err.message });
+  }
+}
