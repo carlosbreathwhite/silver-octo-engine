@@ -1,5 +1,9 @@
-export default async function handler(req, res) {
+export const config = {
+  api: { bodyParser: { sizeLimit: '1mb' } },
+  maxDuration: 300 // Replicate polling needs time (requires Vercel Pro)
+};
 
+export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
@@ -9,13 +13,11 @@ export default async function handler(req, res) {
 
   const { prompt, image_url, aspect_ratio, resolution } = req.body;
 
-  if (!prompt) return res.status(400).json({ error: 'Missing prompt' });
+  if (!prompt) return res.status(400).json({ success: false, error: 'Missing prompt' });
 
   const dimensions = calculateDimensions(aspect_ratio || '1:1', resolution || '2K');
 
   try {
-
-    // Build input object — only include image if one was provided
     const modelInput = {
       prompt: prompt,
       width: dimensions.width,
@@ -31,7 +33,7 @@ export default async function handler(req, res) {
     const replicateResponse = await fetch('https://api.replicate.com/v1/predictions', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${process.env.REPLICATE_API_TOKEN}`,
+        'Authorization': 'Bearer ' + process.env.REPLICATE_API_TOKEN,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
@@ -41,8 +43,8 @@ export default async function handler(req, res) {
     });
 
     if (!replicateResponse.ok) {
-      const errBody = await replicateResponse.json().catch(() => ({}));
-      throw new Error(errBody.detail || `Replicate API returned ${replicateResponse.status}`);
+      const errBody = await replicateResponse.json().catch(function() { return {}; });
+      throw new Error(errBody.detail || 'Replicate API returned ' + replicateResponse.status);
     }
 
     const prediction = await replicateResponse.json();
@@ -53,7 +55,6 @@ export default async function handler(req, res) {
 
     const result = await pollForCompletion(prediction.urls.get);
 
-    // Replicate returns output as a string, an array of strings, or an array of objects
     let outputUrl = result.output;
     if (Array.isArray(outputUrl)) {
       outputUrl = outputUrl[0];
@@ -74,7 +75,7 @@ export default async function handler(req, res) {
 
   } catch (error) {
     console.error('Z-Image error:', error);
-    return res.status(500).json({ error: error.message || 'Z-Image editing failed' });
+    return res.status(500).json({ success: false, error: error.message || 'Z-Image editing failed' });
   }
 }
 
@@ -91,16 +92,16 @@ function calculateDimensions(aspect_ratio, resolution) {
   }
 }
 
-async function pollForCompletion(getUrl, maxAttempts = 90, interval = 1500) {
+async function pollForCompletion(getUrl, maxAttempts = 120, interval = 2000) {
   for (let i = 0; i < maxAttempts; i++) {
     const response = await fetch(getUrl, {
       headers: {
-        'Authorization': `Bearer ${process.env.REPLICATE_API_TOKEN}`,
+        'Authorization': 'Bearer ' + process.env.REPLICATE_API_TOKEN,
       },
     });
 
     if (!response.ok) {
-      throw new Error(`Polling failed with status ${response.status}`);
+      throw new Error('Polling failed with status ' + response.status);
     }
 
     const data = await response.json();
