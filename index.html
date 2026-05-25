@@ -221,13 +221,11 @@
 (function() {
   'use strict';
 
-  // API endpoints
   var NANO_PROXY = '/api/generate';
   var UPLOAD_PROXY = '/api/upload';
   var MORPH_PROXY = '/api/morph';
   var ZIMAGE_PROXY = '/api/zimage';
 
-  // Prompt pools
   var PROMPTS = [
     "A ethereal goddess of the moon, flowing silver hair, glowing lunar tattoos, floating in a cosmic void with stars reflecting in her eyes, fantasy art, WLOP style, artstation trending, hyper-detailed, 8k",
     "A samurai warrior in neon-lit cyberpunk city streets at night, holding a plasma katana, rain soaked ground reflecting holographic advertisements, cinematic lighting, blade runner vibe, photorealistic, 8k",
@@ -260,7 +258,6 @@
     'Applying final touches...'
   ];
 
-  // ---- DOM refs ----
   var promptEl = document.getElementById('prompt');
   var charcountEl = document.getElementById('charcount');
   var shuffleBtn = document.getElementById('shuffleBtn');
@@ -293,7 +290,6 @@
   var resBtns = document.querySelectorAll('.res-btn');
   var nanoOnlyEls = document.querySelectorAll('.nano-only');
 
-  // ---- State ----
   var activeEngine = 'nano';
   var activeTab = 'url';
   var activeRatio = '1:1';
@@ -302,8 +298,6 @@
   var uploadInProgress = false;
   var nanoUsed = [];
   var morphUsed = [];
-
-  // ---- Helpers ----
 
   function updateCount() {
     var n = promptEl.value.length;
@@ -331,8 +325,6 @@
     return uploadedUrl;
   }
 
-  // ---- Shuffle ----
-
   shuffleBtn.addEventListener('click', function() {
     if (activeEngine === 'morph') {
       setPrompt(pickRandom(MORPH_PROMPTS, morphUsed));
@@ -341,9 +333,7 @@
     }
   });
 
-  // ---- File upload ----
-
-  function uploadToProxy(file, cb) {
+  function uploadToProxy(file) {
     var formData = new FormData();
     formData.append('image', file);
 
@@ -371,14 +361,12 @@
 
   function handleFile(file) {
     if (!file || !file.type.match(/^image\/(jpeg|png|webp)$/)) return;
-
     uploadedUrl = null;
     uploadInProgress = true;
     previewName.textContent = file.name;
     uploadStatus.className = 'upload-status uploading';
     uploadStatus.innerHTML = '<span class="mini-spin"></span> Uploading...';
     uploadPreview.classList.add('show');
-
     var reader = new FileReader();
     reader.onloadend = function() { previewImg.src = reader.result; };
     reader.readAsDataURL(file);
@@ -412,8 +400,6 @@
     syncControls();
   });
 
-  // ---- Edit tabs ----
-
   editTabs.forEach(function(tab) {
     tab.addEventListener('click', function() {
       editTabs.forEach(function(t) { t.classList.remove('active'); });
@@ -428,8 +414,6 @@
 
   editUrl.addEventListener('input', syncControls);
 
-  // ---- Ratio ----
-
   function setRatio(ratio) {
     activeRatio = ratio;
     ratioEls.forEach(function(r) {
@@ -438,12 +422,8 @@
   }
 
   ratioEls.forEach(function(r) {
-    r.addEventListener('click', function() {
-      setRatio(r.getAttribute('data-r'));
-    });
+    r.addEventListener('click', function() { setRatio(r.getAttribute('data-r')); });
   });
-
-  // ---- Resolution ----
 
   function setRes(res) {
     activeRes = res;
@@ -453,12 +433,8 @@
   }
 
   resBtns.forEach(function(btn) {
-    btn.addEventListener('click', function() {
-      setRes(btn.getAttribute('data-res'));
-    });
+    btn.addEventListener('click', function() { setRes(btn.getAttribute('data-res')); });
   });
-
-  // ---- Engine switching & control sync ----
 
   function isEditMode() {
     if (activeEngine !== 'nano') return false;
@@ -466,17 +442,14 @@
   }
 
   function syncControls() {
-    // Morph hides ratio/res entirely
     if (activeEngine === 'morph') {
       controlsRow.style.display = 'none';
       editNotice.style.display = 'none';
       return;
     }
-
     var editMode = isEditMode();
     controlsRow.style.display = editMode ? 'none' : '';
     editNotice.style.display = editMode ? 'flex' : 'none';
-
     if (editMode) {
       setRatio('1:1');
       setRes('1K');
@@ -487,10 +460,8 @@
     var isNano = (activeEngine === 'nano');
     var isMorph = (activeEngine === 'morph');
 
-    // Show edit section for all three engines
     editSection.classList.add('visible');
 
-    // Hide nano-only ratios when not on NanoBanana
     nanoOnlyEls.forEach(function(el) {
       el.style.display = isNano ? '' : 'none';
     });
@@ -521,8 +492,6 @@
     });
   });
 
-  // ---- Generate ----
-
   function unwrapOutput(val) {
     if (typeof val === 'string') return val;
     if (Array.isArray(val)) {
@@ -537,7 +506,6 @@
 
   genBtn.addEventListener('click', function() {
     var promptText = promptEl.value.trim();
-
     errEl.classList.remove('show');
     errEl.textContent = '';
     resultEl.classList.remove('show');
@@ -548,7 +516,6 @@
       return;
     }
 
-    // Morph requires an image
     if (activeEngine === 'morph') {
       if (!getImageSource()) {
         errEl.textContent = '✕ Morph requires an image. Please paste a URL or upload an image to transform.';
@@ -560,10 +527,24 @@
     var imageSource = getImageSource();
     var fetchUrl, fetchBody, badgeText;
 
-    if (activeEngine === 'morph') {
+    if (activeEngine === 'nano') {
+      fetchUrl = NANO_PROXY;
+      fetchBody = JSON.stringify({
+        text: promptText,
+        ratio: activeRatio,
+        res: activeRes,
+        links: imageSource
+      });
+      badgeText = 'via NanoBanana · ' + activeRes + ' · ' + activeRatio;
+
+    } else if (activeEngine === 'morph') {
       fetchUrl = MORPH_PROXY;
-      fetchBody = JSON.stringify({ image_url: imageSource, prompt: promptText });
+      fetchBody = JSON.stringify({
+        image_url: imageSource,
+        prompt: promptText
+      });
       badgeText = 'via Morph · Transform';
+
     } else if (activeEngine === 'zimage') {
       fetchUrl = ZIMAGE_PROXY;
       fetchBody = JSON.stringify({
@@ -573,15 +554,6 @@
         resolution: activeRes
       });
       badgeText = 'via Z-Image · ' + activeRes + ' · ' + activeRatio;
-    } else {
-      fetchUrl = NANO_PROXY;
-      fetchBody = JSON.stringify({
-        prompt: promptText,
-        image_url: imageSource,
-        aspect_ratio: activeRatio,
-        resolution: activeRes
-      });
-      badgeText = 'via NanoBanana · ' + activeRes + ' · ' + activeRatio;
     }
 
     genBtn.disabled = true;
@@ -605,11 +577,12 @@
       return res.json();
     })
     .then(function(data) {
-      if (!data.success) {
+      if (data.success === false) {
         throw new Error(data.error || 'Generation failed');
       }
 
-      var url = unwrapOutput(data.output);
+      var url = unwrapOutput(data.output) || unwrapOutput(data.image_url) || unwrapOutput(data.url);
+
       if (!url) throw new Error('No image URL in response');
 
       statusEl.classList.remove('show');
@@ -617,7 +590,6 @@
       engineBadge.textContent = badgeText;
       resultEl.classList.add('show');
 
-      // Auto-refresh prompt for next use
       setTimeout(function() {
         if (activeEngine === 'morph') {
           setPrompt(pickRandom(MORPH_PROMPTS, morphUsed));
@@ -636,8 +608,6 @@
     });
   });
 
-  // ---- Save ----
-
   saveBtn.addEventListener('click', function() {
     var src = resultImg.src;
     if (!src) return;
@@ -648,8 +618,6 @@
     a.click();
     document.body.removeChild(a);
   });
-
-  // ---- Init ----
 
   promptEl.addEventListener('input', updateCount);
   setPrompt(pickRandom(PROMPTS, nanoUsed));
