@@ -1,5 +1,5 @@
-// api/zimage.js
 export default async function handler(req, res) {
+
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
@@ -11,16 +11,23 @@ export default async function handler(req, res) {
 
   if (!prompt) return res.status(400).json({ error: 'Missing prompt' });
 
-  // Calculate dimensions
   const dimensions = calculateDimensions(aspect_ratio || '1:1', resolution || '2K');
 
-  // Prepare image input
-  let imageInput = null;
-  if (image_url && image_url.trim() !== '') {
-    imageInput = image_url;
-  }
-
   try {
+
+    // Build input object — only include image if one was provided
+    const modelInput = {
+      prompt: prompt,
+      width: dimensions.width,
+      height: dimensions.height,
+      num_inference_steps: 50,
+      guidance_scale: 7.5,
+    };
+
+    if (image_url) {
+      modelInput.image = image_url;
+    }
+
     const replicateResponse = await fetch('https://api.replicate.com/v1/predictions', {
       method: 'POST',
       headers: {
@@ -28,27 +35,41 @@ export default async function handler(req, res) {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        version: "454dfb341ba686aa964a061fbe7de965ef8e51a684641e11b366305d8359c440",
-        input: {
-          prompt: prompt,
-          image: imageInput,
-          width: dimensions.width,
-          height: dimensions.height,
-          num_inference_steps: 50,
-          guidance_scale: 7.5,
-        }
-      })
+        version: '454dfb341ba686aa964a061fbe7de965ef8e51a684641e11b366305d8359c440',
+        input: modelInput,
+      }),
     });
 
+    if (!replicateResponse.ok) {
+      const errBody = await replicateResponse.json().catch(() => ({}));
+      throw new Error(errBody.detail || `Replicate API returned ${replicateResponse.status}`);
+    }
+
     const prediction = await replicateResponse.json();
+
+    if (!prediction.urls || !prediction.urls.get) {
+      throw new Error('Invalid prediction response from Replicate');
+    }
+
     const result = await pollForCompletion(prediction.urls.get);
-    
+
+    // Replicate returns output as a string, an array of strings, or an array of objects
+    let outputUrl = result.output;
+    if (Array.isArray(outputUrl)) {
+      outputUrl = outputUrl[0];
+      if (typeof outputUrl === 'object' && outputUrl.url) {
+        outputUrl = outputUrl.url;
+      }
+    }
+
+    if (!outputUrl) {
+      throw new Error('No image returned from model');
+    }
+
     return res.status(200).json({
       success: true,
-      output: result.output,
+      output: outputUrl,
       engine: 'zimage',
-      resolution: resolution,
-      aspect_ratio: aspect_ratio
     });
 
   } catch (error) {
@@ -58,14 +79,11 @@ export default async function handler(req, res) {
 }
 
 function calculateDimensions(aspect_ratio, resolution) {
-  const ratios = {
-    '1:1': 1, '16:9': 16/9, '9:16': 9/16,
-    '4:3': 4/3, '3:4': 3/4
-  };
+  const ratios = { '1:1': 1, '16:9': 16 / 9, '9:16': 9 / 16, '4:3': 4 / 3, '3:4': 3 / 4 };
   const resMap = { '1K': 1024, '2K': 2048, '4K': 4096 };
   const longSide = resMap[resolution] || 2048;
   const ratio = ratios[aspect_ratio] || 1;
-  
+
   if (ratio >= 1) {
     return { width: longSide, height: Math.round(longSide / ratio) };
   } else {
@@ -75,11 +93,24 @@ function calculateDimensions(aspect_ratio, resolution) {
 
 async function pollForCompletion(getUrl, maxAttempts = 90, interval = 1500) {
   for (let i = 0; i < maxAttempts; i++) {
-    const response = await fetch(getUrl);
+    const response = await fetch(getUrl, {
+      headers: {
+        'Authorization': `Bearer ${process.env.REPLICATE_API_TOKEN}`,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`Polling failed with status ${response.status}`);
+    }
+
     const data = await response.json();
+
     if (data.status === 'succeeded') return data;
     if (data.status === 'failed') throw new Error(data.error || 'Prediction failed');
+    if (data.status === 'canceled') throw new Error('Prediction was canceled');
+
     await new Promise(resolve => setTimeout(resolve, interval));
   }
+
   throw new Error('Timeout waiting for image generation');
 }
