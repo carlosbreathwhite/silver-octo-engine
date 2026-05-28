@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Conjure — Summon anything into existence</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzNiAzNiI+CiAgPHJlY3Qgd2lkdGg9IjM2IiBoZWlnaHQ9IjM2IiByeD0iOCIgZmlsbD0iIzExMTExMSIvPgogIDxnIHN0cm9rZT0iI2ZmZmZmZiIgZmlsbD0ibm9uZSIgc3Ryb2tlLXdpZHRoPSIxLjgiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCI+CiAgICA8cGF0aCBkPSJNMjEgNy41bC0zLTEuNS0zIDEuNXYzTDEyIDEybC0xLjUgM0wxMiAxOGwzIDEuNXYzbDMgMS41IDMtMS41di0zTDI0IDE4bDEuNS0zTDI0IDEybC0zLTEuNXYtM3oiLz4KICAgIDxjaXJjbGUgY3g9IjE4IiBjeT0iMTUiIHI9IjIuNSIvPgogIDwvZz4KPC9zdmc+">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #f5f5f0;
+      --surface: #ffffff;
+      --border: rgba(0,0,0,0.1);
+      --border-strong: rgba(0,0,0,0.22);
+      --text-primary: #111111;
+      --text-secondary: #555555;
+      --text-tertiary: #999999;
+      --danger-bg: #fff0f0;
+      --danger-text: #c0392b;
+      --success-text: #1a7a3c;
+      --radius-md: 12px;
+      --radius-lg: 20px;
+    }
+
+    body {
+      font-family: 'DM Sans', system-ui, sans-serif;
+      background: var(--bg);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1rem;
+      color: var(--text-primary);
+    }
+
+    /* ── DESKTOP: side-by-side ── */
+    .shell {
+      width: 100%;
+      max-width: 980px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      align-items: start;
+    }
+
+    /* ── MOBILE: single column ── */
+    @media (max-width: 768px) {
+      body { align-items: flex-start; padding: 1.25rem 1rem 2rem; }
+      .shell { grid-template-columns: 1fr; max-width: 500px; }
+      .result-panel { min-height: auto; }
+      .placeholder { min-height: 220px; }
+    }
+
+    /* Header — desktop: spans both cols via the left panel */
+    .header { text-align: center; margin-bottom: 1.75rem; }
+    .wordmark { display: inline-flex; align-items: center; gap: 10px; margin-bottom: 0.5rem; }
+    .logo { width: 34px; height: 34px; background: var(--text-primary); border-radius: 9px; display: flex; align-items: center; justify-content: center; }
+    .logo svg { width: 17px; height: 17px; stroke: #fff; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+    .brand { font-size: 21px; font-weight: 500; letter-spacing: -0.4px; }
+    .tagline { font-size: 13px; color: var(--text-tertiary); }
+
+    /* Cards */
+    .card { background: var(--surface); border: 0.5px solid var(--border); border-radius: var(--radius-lg); padding: 1.5rem; }
+
+    /* Result panel */
+    .result-panel {
+      background: var(--surface);
+      border: 0.5px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      /* Match left panel height on desktop */
+      position: sticky;
+      top: 2rem;
+    }
+
+    /* Placeholder state */
+    .placeholder {
+      flex: 1;
+      min-height: 360px;
+      background: #f7f7f5;
+      border: 1.5px dashed var(--border-strong);
+      border-radius: 14px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 2rem;
+    }
+    .placeholder-icon { font-size: 32px; opacity: 0.25; }
+    .placeholder-text { font-size: 13px; color: var(--text-tertiary); font-weight: 500; }
+    .placeholder-sub { font-size: 11px; color: var(--text-tertiary); opacity: 0.7; }
+
+    /* Generated image */
+    .result-img-wrap { display: none; }
+    .result-img { width: 100%; display: block; border-radius: 14px; border: 0.5px solid var(--border); }
+    .img-meta { display: flex; align-items: center; justify-content: space-between; }
+    .img-meta-left { display: flex; flex-direction: column; gap: 2px; }
+    .expire { font-size: 12px; color: var(--text-tertiary); }
+    .engine-badge { font-size: 11px; color: var(--text-tertiary); }
+    .save-btn { background: #f7f7f5; border: 0.5px solid var(--border); border-radius: 8px; padding: 6px 12px; font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 500; color: var(--text-secondary); cursor: pointer; display: flex; align-items: center; gap: 5px; transition: background 0.15s; white-space: nowrap; }
+    .save-btn:hover { background: #efefec; }
+
+    /* Field label */
+    .field-label { font-size: 11px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-tertiary); margin-bottom: 8px; display: block; }
+
+    /* Engine selector */
+    .engine-row { display: flex; gap: 7px; margin-bottom: 1.25rem; }
+    .engine-btn { flex: 1; background: #f7f7f5; border: 0.5px solid var(--border); border-radius: 10px; padding: 9px 10px; cursor: pointer; transition: all 0.15s; display: flex; flex-direction: column; align-items: flex-start; gap: 2px; font-family: 'DM Sans', sans-serif; text-align: left; }
+    .engine-btn:hover { border-color: var(--border-strong); }
+    .engine-btn.active { background: var(--text-primary); border-color: var(--text-primary); }
+    .engine-name { font-size: 12px; font-weight: 500; color: var(--text-secondary); transition: color 0.15s; }
+    .engine-btn.active .engine-name { color: #fff; }
+    .engine-tag { font-size: 9px; color: var(--text-tertiary); letter-spacing: 0.03em; transition: color 0.15s; }
+    .engine-btn.active .engine-tag { color: rgba(255,255,255,0.5); }
+
+    .section-divider { border: none; border-top: 0.5px solid var(--border); margin: 1.1rem 0; }
+
+    /* Textarea */
+    .textarea-wrap { position: relative; }
+    textarea { width: 100%; background: #f7f7f5; border: 0.5px solid var(--border); border-radius: var(--radius-md); padding: 11px 13px 36px 13px; font-family: 'DM Sans', sans-serif; font-size: 13px; line-height: 1.6; color: var(--text-primary); resize: none; outline: none; transition: border-color 0.15s; }
+    textarea::placeholder { color: var(--text-tertiary); }
+    textarea:focus { border-color: var(--border-strong); background: #fff; }
+    .toolbar { position: absolute; bottom: 0; left: 0; right: 0; display: flex; align-items: center; justify-content: space-between; padding: 5px 9px; pointer-events: none; }
+    .charcount { font-size: 10px; color: var(--text-tertiary); }
+    .shuffle-btn { pointer-events: all; background: none; border: 0.5px solid var(--border); border-radius: 6px; padding: 2px 8px; font-family: 'DM Sans', sans-serif; font-size: 10px; color: var(--text-tertiary); cursor: pointer; display: flex; align-items: center; gap: 3px; transition: all 0.15s; }
+    .shuffle-btn:hover { color: var(--text-secondary); border-color: var(--border-strong); background: #f0f0ec; }
+    .spin { display: inline-block; transition: transform 0.35s; }
+    .shuffle-btn:hover .spin { transform: rotate(180deg); }
+
+    /* Edit section */
+    .edit-section { margin-top: 0.9rem; display: none; }
+    .edit-section.visible { display: block; }
+    .edit-label-row { display: flex; align-items: center; gap: 6px; margin-top: 0.9rem; margin-bottom: 7px; }
+    .edit-label-row .field-label { margin: 0; }
+    .required-badge { font-size: 9px; font-weight: 500; background: #111; color: #fff; border-radius: 4px; padding: 1px 5px; letter-spacing: 0.04em; display: none; }
+    .edit-tabs { display: flex; gap: 5px; margin-bottom: 9px; }
+    .edit-tab { background: #f7f7f5; border: 0.5px solid var(--border); border-radius: 7px; padding: 4px 12px; font-family: 'DM Sans', sans-serif; font-size: 11px; font-weight: 500; color: var(--text-tertiary); cursor: pointer; transition: all 0.15s; }
+    .edit-tab.active { background: #fff; border-color: var(--border-strong); color: var(--text-primary); }
+    .edit-panel { display: none; }
+    .edit-panel.active { display: block; }
+    .edit-input { width: 100%; background: #f7f7f5; border: 0.5px solid var(--border); border-radius: var(--radius-md); padding: 9px 13px; font-family: 'DM Sans', sans-serif; font-size: 13px; color: var(--text-primary); outline: none; transition: border-color 0.15s; }
+    .edit-input::placeholder { color: var(--text-tertiary); }
+    .edit-input:focus { border-color: var(--border-strong); background: #fff; }
+    .edit-hint { font-size: 10px; color: var(--text-tertiary); margin-top: 4px; }
+
+    /* Dropzone */
+    .dropzone { border: 1.5px dashed var(--border-strong); border-radius: var(--radius-md); padding: 16px 14px; text-align: center; cursor: pointer; transition: all 0.15s; background: #f7f7f5; position: relative; }
+    .dropzone:hover, .dropzone.dragover { border-color: var(--text-primary); background: #f0f0ec; }
+    .dropzone input[type=file] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
+    .dropzone-icon { font-size: 20px; margin-bottom: 5px; }
+    .dropzone-text { font-size: 12px; color: var(--text-secondary); font-weight: 500; }
+    .dropzone-sub { font-size: 10px; color: var(--text-tertiary); margin-top: 2px; }
+
+    /* Upload preview */
+    .upload-preview { display: none; margin-top: 9px; border-radius: var(--radius-md); border: 0.5px solid var(--border); overflow: hidden; }
+    .upload-preview.show { display: block; }
+    .upload-preview img { width: 100%; display: block; max-height: 160px; object-fit: cover; }
+    .upload-preview-bar { display: flex; align-items: center; justify-content: space-between; padding: 7px 11px; background: #f7f7f5; border-top: 0.5px solid var(--border); }
+    .upload-preview-name { font-size: 11px; color: var(--text-secondary); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 180px; }
+    .upload-status { font-size: 10px; font-weight: 500; display: flex; align-items: center; gap: 4px; }
+    .upload-status.uploading { color: var(--text-tertiary); }
+    .upload-status.done { color: var(--success-text); }
+    .upload-status.fail { color: var(--danger-text); }
+    .upload-clear { background: none; border: none; font-size: 15px; cursor: pointer; color: var(--text-tertiary); padding: 0 3px; line-height: 1; }
+    .upload-clear:hover { color: var(--text-primary); }
+    .mini-spin { width: 9px; height: 9px; border: 1.5px solid rgba(0,0,0,0.15); border-top-color: var(--text-secondary); border-radius: 50%; animation: mspin 0.7s linear infinite; display: inline-block; }
+    @keyframes mspin { to { transform: rotate(360deg); } }
+
+    /* Edit notice */
+    .edit-notice { display: none; align-items: center; gap: 7px; margin: 1rem 0; padding: 9px 13px; background: #f7f7f5; border: 0.5px solid var(--border); border-radius: 9px; }
+    .edit-notice-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--text-tertiary); flex-shrink: 0; }
+    .edit-notice-text { font-size: 11px; color: var(--text-tertiary); }
+
+    /* Controls */
+    .controls-row { display: flex; gap: 10px; margin: 1rem 0; align-items: flex-start; }
+    .controls-col { flex: 1; }
+    .ratios { display: flex; gap: 5px; flex-wrap: wrap; }
+    .ratio { background: #f7f7f5; border: 0.5px solid var(--border); border-radius: 7px; padding: 6px 4px 5px; cursor: pointer; transition: all 0.15s; display: flex; flex-direction: column; align-items: center; gap: 3px; min-width: 42px; }
+    .ratio-icon { border: 1.5px solid rgba(0,0,0,0.2); border-radius: 2px; transition: border-color 0.15s; }
+    .ratio-name { font-size: 9px; font-weight: 500; color: var(--text-secondary); transition: color 0.15s; white-space: nowrap; }
+    .ratio.active { background: #fff; border-color: var(--border-strong); }
+    .ratio.active .ratio-icon { border-color: var(--text-primary); }
+    .ratio.active .ratio-name { color: var(--text-primary); }
+    .res-group { display: flex; gap: 5px; }
+    .res-btn { flex: 1; background: #f7f7f5; border: 0.5px solid var(--border); border-radius: 7px; padding: 7px 4px; font-family: 'DM Sans', sans-serif; font-size: 11px; font-weight: 500; color: var(--text-secondary); cursor: pointer; transition: all 0.15s; text-align: center; }
+    .res-btn:hover { border-color: var(--border-strong); }
+    .res-btn.active { background: #fff; border-color: var(--border-strong); color: var(--text-primary); }
+
+    /* Generate button */
+    .gen-btn { width: 100%; background: var(--text-primary); color: #fff; border: none; border-radius: var(--radius-md); padding: 12px; font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 7px; margin-top: 1.1rem; transition: opacity 0.15s, transform 0.1s; }
+    .gen-btn:hover { opacity: 0.82; }
+    .gen-btn:active { transform: scale(0.99); opacity: 0.7; }
+    .gen-btn:disabled { opacity: 0.35; cursor: default; transform: none; }
+
+    /* Status */
+    .status { display: none; align-items: center; gap: 10px; padding: 11px 13px; background: #f7f7f5; border-radius: 9px; margin-top: 0.9rem; }
+    .status.show { display: flex; }
+    .track { flex: 1; height: 2px; background: rgba(0,0,0,0.1); border-radius: 99px; overflow: hidden; }
+    .bar { height: 100%; width: 0%; background: var(--text-primary); border-radius: 99px; animation: sweep 2s ease-in-out infinite; }
+    @keyframes sweep { 0%{width:0%;margin-left:0} 55%{width:55%} 85%{width:90%} 100%{width:0%;margin-left:100%} }
+    .status-text { font-size: 11px; color: var(--text-secondary); white-space: nowrap; }
+
+    /* Error */
+    .err { display: none; font-size: 12px; color: var(--danger-text); background: var(--danger-bg); border-radius: 9px; padding: 10px 13px; margin-top: 0.9rem; }
+    .err.show { display: block; }
+
+    /* Prompt animation */
+    @keyframes fade-up { from { opacity: 0; transform: translateY(3px); } to { opacity: 1; transform: translateY(0); } }
+    textarea.refreshed { animation: fade-up 0.28s ease; }
+  </style>
+</head>
+<body>
+
+<div class="shell">
+
+  <!-- ── LEFT: Controls ── -->
+  <div class="card">
+
+    <div class="header">
+      <div class="wordmark">
+        <div class="logo">
+          <svg viewBox="0 0 24 24"><path d="M15 4.5l-3-1.5-3 1.5v3L6 9l-1.5 3L6 15l3 1.5v3l3 1.5 3-1.5v-3L18 15l1.5-3L18 9l-3-1.5v-3z"/><circle cx="12" cy="12" r="2.5"/></svg>
+        </div>
+        <span class="brand">Conjure</span>
+      </div>
+      <p class="tagline">Describe anything. Watch it appear.</p>
+    </div>
+
+    <label class="field-label">Engine</label>
+    <div class="engine-row">
+      <button class="engine-btn active" id="eng-nano" data-engine="nano">
+        <span class="engine-name">NanoBanana</span>
+        <span class="engine-tag">Generate · Edit · 4K</span>
+      </button>
+      <button class="engine-btn" id="eng-morph" data-engine="morph">
+        <span class="engine-name">Morph</span>
+        <span class="engine-tag">Transform any image</span>
+      </button>
+      <button class="engine-btn" id="eng-zimage" data-engine="zimage">
+        <span class="engine-name">Z-Image</span>
+        <span class="engine-tag">AI image editing</span>
+      </button>
+    </div>
+
+    <hr class="section-divider">
+
+    <label class="field-label" for="prompt">Prompt</label>
+    <div class="textarea-wrap">
+      <textarea id="prompt" rows="3"></textarea>
+      <div class="toolbar">
+        <span class="charcount" id="charcount">0 characters</span>
+        <button class="shuffle-btn" id="shuffle"><span class="spin">↻</span> Inspire me</button>
+      </div>
+    </div>
+
+    <div class="edit-section visible" id="editSection">
+      <div class="edit-label-row">
+        <label class="field-label" id="editSectionLabel">Image to edit</label>
+        <span style="font-size:10px;color:var(--text-tertiary);" id="editSectionOptional">(optional)</span>
+        <span class="required-badge" id="editRequiredBadge">required</span>
+      </div>
+      <div class="edit-tabs">
+        <button class="edit-tab active" data-tab="url">Paste URL</button>
+        <button class="edit-tab" data-tab="upload">Upload from device</button>
+      </div>
+      <div class="edit-panel active" id="panel-url">
+        <input class="edit-input" id="editUrl" type="url" placeholder="https://i.imgur.com/your-image.jpg">
+        <p class="edit-hint">Direct image link — jpg, png, or webp</p>
+      </div>
+      <div class="edit-panel" id="panel-upload">
+        <div class="dropzone" id="dropzone">
+          <input type="file" id="fileInput" accept="image/jpeg,image/png,image/webp">
+          <div class="dropzone-icon">↑</div>
+          <p class="dropzone-text">Click or drag image here</p>
+          <p class="dropzone-sub">jpg · png · webp · max 32MB</p>
+        </div>
+        <div class="upload-preview" id="uploadPreview">
+          <img id="previewImg" src="" alt="Preview">
+          <div class="upload-preview-bar">
+            <span class="upload-preview-name" id="previewName"></span>
+            <span class="upload-status uploading" id="uploadStatus"></span>
+            <button class="upload-clear" id="clearUpload" title="Remove">✕</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="edit-notice" id="editNotice">
+      <div class="edit-notice-dot"></div>
+      <span class="edit-notice-text">Ratio and resolution fixed to 1:1 · 1K in edit mode to avoid watermarks</span>
+    </div>
+
+    <div class="controls-row" id="controlsRow">
+      <div class="controls-col">
+        <label class="field-label">Ratio</label>
+        <div class="ratios">
+          <div class="ratio active" data-r="1:1"><div class="ratio-icon" style="width:20px;height:20px"></div><span class="ratio-name">1:1</span></div>
+          <div class="ratio" data-r="16:9"><div class="ratio-icon" style="width:28px;height:16px"></div><span class="ratio-name">16:9</span></div>
+          <div class="ratio" data-r="9:16"><div class="ratio-icon" style="width:14px;height:25px"></div><span class="ratio-name">9:16</span></div>
+          <div class="ratio" data-r="4:3"><div class="ratio-icon" style="width:24px;height:18px"></div><span class="ratio-name">4:3</span></div>
+          <div class="ratio" data-r="3:4"><div class="ratio-icon" style="width:16px;height:22px"></div><span class="ratio-name">3:4</span></div>
+        </div>
+      </div>
+      <div class="controls-col">
+        <label class="field-label">Resolution</label>
+        <div class="res-group">
+          <button class="res-btn" data-res="1K">1K</button>
+          <button class="res-btn active" data-res="2K">2K</button>
+          <button class="res-btn" data-res="4K">4K</button>
+        </div>
+      </div>
+    </div>
+
+    <button class="gen-btn" id="genBtn">✦ Conjure image</button>
+
+    <div class="status" id="statusEl">
+      <div class="track"><div class="bar"></div></div>
+      <span class="status-text" id="statusText">Generating...</span>
+    </div>
+
+    <div class="err" id="errEl"></div>
+
+  </div>
+
+  <!-- ── RIGHT: Result ── -->
+  <div class="result-panel" id="resultPanel">
+
+    <div class="placeholder" id="placeholder">
+      <div class="placeholder-icon">✦</div>
+      <p class="placeholder-text">Your image appears here</p>
+      <p class="placeholder-sub">Enter a prompt and hit Conjure</p>
+    </div>
+
+    <div class="result-img-wrap" id="resultImgWrap">
+      <img class="result-img" id="resultImg" src="" alt="Generated image">
+    </div>
+
+    <div class="img-meta">
+      <div class="img-meta-left">
+        <span class="expire">⏱ Temporary — save before it expires</span>
+        <span class="engine-badge" id="engineBadge"></span>
+      </div>
+      <button class="save-btn" id="saveBtn">↓ Save</button>
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+const NANO_PROXY = '/api/generate';
+const UPLOAD_PROXY = '/api/upload';
+const MORPH_PROXY = '/api/morph';
+const ZIMAGE_PROXY = '/api/zimage';
+
+const PROMPTS = [
+  "A ethereal goddess of the moon, flowing silver hair, glowing lunar tattoos, floating in a cosmic void with stars reflecting in her eyes, fantasy art, WLOP style, hyper-detailed, 8k",
+  "A samurai warrior in neon-lit cyberpunk city streets at night, holding a plasma katana, rain soaked ground reflecting holographic advertisements, cinematic lighting, blade runner vibe, photorealistic, 8k",
+  "Surreal dreamscape of floating islands with upside-down waterfalls, glowing flora, giant mushrooms, soft pastel colors, studio ghibli inspired, whimsical, detailed illustration",
+  "A cozy witch's cottage interior at golden hour, potion bottles glowing, spellbook open, cat sleeping by the fireplace, warm candlelight, detailed digital painting",
+  "Underwater bioluminescent forest, ancient sunken ruins, glowing coral, fish with ethereal light trails, deep ocean mystery, highly detailed, vibrant colors",
+  "Two old friends playing chess in a Central Park autumn afternoon, golden leaves falling, warm sunlight through trees, candid moment, nostalgic film photography look",
+  "A mechanical dragon made of brass and copper, gears visible, flying over a steampunk city at sunset, airships in background, intricate details, industrial fantasy, concept art",
+  "A lone astronaut discovering a giant alien monolith covered in glowing runes on an icy exoplanet, aurora in sky, sci-fi, dramatic lighting, photorealistic, 8k",
+  "An abandoned library overgrown with vines and moss, sunlight beams through broken stained glass window, dust particles floating, mysterious atmosphere, cinematic",
+  "A polar bear walking through a tiny pastel-colored village during cherry blossom season, whimsical, storybook illustration style, soft lighting, warm colors",
+  "A Tokyo ramen shop at 2am, rain on the windows, one lonely chef stirring the broth, neon reflections, cinematic",
+  "An astronaut floating in deep space reading a dog-eared paperback novel, planets behind them, warm light",
+  "A grand library built inside a hollowed-out redwood tree, spiral staircases, dust particles in sunbeams",
+  "Neon-drenched Hong Kong alleyway at midnight, rain, reflections, blade runner mood, 35mm film grain",
+  "The interior of a colossal clock tower, gears the size of houses, tiny silhouette of a person inside",
+  "A sleepy village perched on the back of a giant tortoise crossing a desert, magical realism",
+  "A deep-sea explorer discovering a glowing ancient civilization at the bottom of the ocean",
+  "Cherry blossom petals falling on a crowded Tokyo crossing, slow shutter, pastel palette",
+  "A street artist painting a mural that comes to life at night, long exposure, surreal and vivid",
+  "A jazz musician playing saxophone on a rooftop in New Orleans, full moon, fireflies, long exposure",
+];
+
+const MORPH_PROMPTS = [
+  "Make it look like a watercolor painting, soft edges, color bleeding, artistic",
+  "Transform into cyberpunk style, neon lights, dark atmosphere, purple and blue tones",
+  "Apply vintage film look, add grain, fade colors, 1970s aesthetic",
+  "Convert to anime/manga style, bold lines, vibrant colors, cel-shaded",
+  "Make it look like an oil painting, visible brushstrokes, rich textures, impressionist",
+  "Apply dramatic cinematic lighting, deep shadows, rim light, movie poster quality",
+  "Transform into pixel art style, 8-bit retro game aesthetic, blocky but detailed",
+  "Make it look like a charcoal sketch, black and white, rough textures, artistic",
+  "Turn this into a Studio Ghibli anime scene, soft painterly style",
+  "Apply a golden hour warm sunlight effect, dreamy and atmospheric",
+];
+
+const ZIMAGE_PROMPTS = [
+  "Make the background a futuristic cyberpunk city at night",
+  "Change the style to look like a Renaissance oil painting",
+  "Add dramatic stormy clouds and lightning in the background",
+  "Transform the scene into a magical fantasy forest with glowing trees",
+  "Make it look like a professional fashion photography shoot",
+  "Apply a moody noir black and white aesthetic with deep shadows",
+  "Change the environment to a Japanese cherry blossom garden in spring",
+  "Make it look like concept art from a sci-fi blockbuster film",
+  "Transform into a warm cozy autumn scene with falling leaves",
+  "Apply a vibrant pop art style with bold colors and outlines",
+];
+
+let nanoUsed = [], morphUsed = [], zimageUsed = [];
+
+function nextPrompt(list, usedArr) {
+  if (usedArr.length >= list.length) usedArr.length = 0;
+  let i;
+  do { i = Math.floor(Math.random() * list.length); } while (usedArr.includes(i));
+  usedArr.push(i);
+  return list[i];
+}
+
+const promptEl = document.getElementById('prompt');
+const charcountEl = document.getElementById('charcount');
+
+function setPrompt(t) {
+  promptEl.value = t;
+  promptEl.classList.remove('refreshed');
+  void promptEl.offsetWidth;
+  promptEl.classList.add('refreshed');
+  updateCount();
+}
+function updateCount() {
+  const n = promptEl.value.length;
+  charcountEl.textContent = n + ' character' + (n === 1 ? '' : 's');
+}
+promptEl.addEventListener('input', updateCount);
+
+document.getElementById('shuffle').addEventListener('click', () => {
+  if (activeEngine === 'morph') setPrompt(nextPrompt(MORPH_PROMPTS, morphUsed));
+  else if (activeEngine === 'zimage') setPrompt(nextPrompt(ZIMAGE_PROMPTS, zimageUsed));
+  else setPrompt(nextPrompt(PROMPTS, nanoUsed));
+});
+
+const controlsRow = document.getElementById('controlsRow');
+const editNotice = document.getElementById('editNotice');
+const editSection = document.getElementById('editSection');
+const editSectionLabel = document.getElementById('editSectionLabel');
+const editSectionOptional = document.getElementById('editSectionOptional');
+const editRequiredBadge = document.getElementById('editRequiredBadge');
+const editUrl = document.getElementById('editUrl');
+
+let activeEngine = 'nano';
+let activeTab = 'url';
+let activeRatio = '1:1';
+let activeRes = '2K';
+let uploadedUrl = null;
+let uploadInProgress = false;
+
+function getImageSource() {
+  if (activeTab === 'url') return editUrl.value.trim() || null;
+  return uploadedUrl || null;
+}
+
+function isNanoEditMode() {
+  if (activeEngine !== 'nano') return false;
+  if (activeTab === 'url') return editUrl.value.trim().length > 0;
+  return uploadedUrl !== null;
+}
+
+function syncControls() {
+  const isMorph = activeEngine === 'morph';
+  const isZimage = activeEngine === 'zimage';
+  if (isMorph || isZimage) {
+    controlsRow.style.display = 'none';
+    editNotice.style.display = 'none';
+    return;
+  }
+  const editing = isNanoEditMode();
+  controlsRow.style.display = editing ? 'none' : '';
+  editNotice.style.display = editing ? 'flex' : 'none';
+  if (editing) { setRatio('1:1'); setRes('1K'); }
+}
+
+function syncEngineUI() {
+  const isMorph = activeEngine === 'morph';
+  const isZimage = activeEngine === 'zimage';
+  const isNano = activeEngine === 'nano';
+  editSection.className = 'edit-section' + (isNano || isMorph || isZimage ? ' visible' : '');
+  if (isMorph) {
+    editSectionLabel.textContent = 'Image to transform';
+    editSectionOptional.style.display = 'none';
+    editRequiredBadge.style.display = '';
+    promptEl.placeholder = 'Describe how to transform the image...';
+    setPrompt(nextPrompt(MORPH_PROMPTS, morphUsed));
+  } else if (isZimage) {
+    editSectionLabel.textContent = 'Image to edit';
+    editSectionOptional.style.display = 'none';
+    editRequiredBadge.style.display = '';
+    promptEl.placeholder = 'Describe how to edit the image...';
+    setPrompt(nextPrompt(ZIMAGE_PROMPTS, zimageUsed));
+  } else {
+    editSectionLabel.textContent = 'Image to edit';
+    editSectionOptional.style.display = '';
+    editRequiredBadge.style.display = 'none';
+    promptEl.placeholder = 'Describe what you want to see...';
+    setPrompt(nextPrompt(PROMPTS, nanoUsed));
+  }
+  syncControls();
+}
+
+document.querySelectorAll('.engine-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.engine-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    activeEngine = btn.dataset.engine;
+    syncEngineUI();
+  });
+});
+
+document.querySelectorAll('.edit-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.edit-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.edit-panel').forEach(p => p.classList.remove('active'));
+    tab.classList.add('active');
+    activeTab = tab.dataset.tab;
+    document.getElementById('panel-' + activeTab).classList.add('active');
+    syncControls();
+  });
+});
+editUrl.addEventListener('input', syncControls);
+
+function setRatio(r) {
+  activeRatio = r;
+  document.querySelectorAll('.ratio').forEach(b => b.classList.toggle('active', b.dataset.r === r));
+}
+document.querySelectorAll('.ratio').forEach(b => b.addEventListener('click', () => setRatio(b.dataset.r)));
+
+function setRes(r) {
+  activeRes = r;
+  document.querySelectorAll('.res-btn').forEach(b => b.classList.toggle('active', b.dataset.res === r));
+}
+document.querySelectorAll('.res-btn').forEach(b => b.addEventListener('click', () => setRes(b.dataset.res)));
+
+const fileInput = document.getElementById('fileInput');
+const dropzone = document.getElementById('dropzone');
+const uploadPreview = document.getElementById('uploadPreview');
+const previewImg = document.getElementById('previewImg');
+const previewName = document.getElementById('previewName');
+const uploadStatus = document.getElementById('uploadStatus');
+
+dropzone.addEventListener('dragover', e => { e.preventDefault(); dropzone.classList.add('dragover'); });
+dropzone.addEventListener('dragleave', () => dropzone.classList.remove('dragover'));
+dropzone.addEventListener('drop', e => { e.preventDefault(); dropzone.classList.remove('dragover'); if (e.dataTransfer.files[0]) handleFile(e.dataTransfer.files[0]); });
+fileInput.addEventListener('change', () => { if (fileInput.files[0]) handleFile(fileInput.files[0]); });
+
+function handleFile(file) {
+  if (!file.type.startsWith('image/')) return;
+  uploadedUrl = null;
+  previewName.textContent = file.name;
+  uploadStatus.className = 'upload-status uploading';
+  uploadStatus.innerHTML = '<span class="mini-spin"></span> Uploading...';
+  uploadPreview.className = 'upload-preview show';
+  const reader = new FileReader();
+  reader.onload = e => { previewImg.src = e.target.result; };
+  reader.readAsDataURL(file);
+  uploadToProxy(file);
+}
+
+async function uploadToProxy(file) {
+  uploadInProgress = true;
+  try {
+    const form = new FormData();
+    form.append('image', file);
+    const res = await fetch(UPLOAD_PROXY, { method: 'POST', body: form });
+    const data = await res.json();
+    if (data.success) {
+      uploadedUrl = data.data.url;
+      uploadStatus.className = 'upload-status done';
+      uploadStatus.innerHTML = '\u2713 Ready';
+      syncControls();
+    } else throw new Error();
+  } catch {
+    uploadStatus.className = 'upload-status fail';
+    uploadStatus.textContent = '\u2715 Upload failed';
+    uploadedUrl = null;
+  }
+  uploadInProgress = false;
+}
+
+document.getElementById('clearUpload').addEventListener('click', () => {
+  uploadedUrl = null;
+  uploadPreview.className = 'upload-preview';
+  fileInput.value = '';
+  previewImg.src = '';
+  syncControls();
+});
+
+const genBtn = document.getElementById('genBtn');
+const statusEl = document.getElementById('statusEl');
+const statusText = document.getElementById('statusText');
+const errEl = document.getElementById('errEl');
+const resultImg = document.getElementById('resultImg');
+const resultPanel = document.getElementById('resultPanel');
+const engineBadge = document.getElementById('engineBadge');
+const placeholderEl = document.getElementById('placeholder');
+const resultImgWrap = document.getElementById('resultImgWrap');
+
+const genMsgs = ['Painting pixels...','Summoning magic...','Sharpening details...','Conjuring your vision...','Applying final touches...'];
+
+genBtn.addEventListener('click', async () => {
+  const prompt = promptEl.value.trim();
+  errEl.className = 'err';
+
+  if (!prompt) { errEl.textContent = 'Please enter a prompt to get started.'; errEl.className = 'err show'; return; }
+
+  const imgSrc = getImageSource();
+  if ((activeEngine === 'morph' || activeEngine === 'zimage') && !imgSrc) {
+    errEl.textContent = activeEngine === 'morph'
+      ? 'Morph requires an image — paste a URL or upload one.'
+      : 'Z-Image requires an image — paste a URL or upload one.';
+    errEl.className = 'err show'; return;
+  }
+
+  if (uploadInProgress) { errEl.textContent = 'Image still uploading — wait a moment.'; errEl.className = 'err show'; return; }
+
+  genBtn.disabled = true;
+  statusText.textContent = genMsgs[Math.floor(Math.random() * genMsgs.length)];
+  statusEl.className = 'status show';
+  placeholderEl.style.display = 'flex';
+  resultImgWrap.style.display = 'none';
+
+  try {
+    let imageUrl;
+
+    if (activeEngine === 'morph') {
+      const res = await fetch(MORPH_PROXY, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ image_url: imgSrc, prompt })
+      });
+      const data = await res.json();
+      if (!data.success) throw new Error(data.error || 'Morph failed');
+      imageUrl = data.image_url;
+      engineBadge.textContent = 'via Morph';
+
+    } else if (activeEngine === 'zimage') {
+      const res = await fetch(ZIMAGE_PROXY, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ image_url: imgSrc, prompt })
+      });
+      const data = await res.json();
+      if (!data.success) throw new Error(data.error || 'Z-Image failed');
+      imageUrl = data.image_url;
+      engineBadge.textContent = 'via Z-Image';
+
+    } else {
+      const res = await fetch(NANO_PROXY, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text: prompt, ratio: activeRatio, res: activeRes, links: imgSrc || undefined })
+      });
+      const data = await res.json();
+      if (!data.success) throw new Error(data.error || 'Generation failed');
+      imageUrl = data.url;
+      engineBadge.textContent = 'via NanoBanana \u00b7 ' + (data.resolution || activeRes) + ' \u00b7 ' + (data.mode === 'edit' ? 'Edit' : 'Create');
+    }
+
+    statusEl.className = 'status';
+    genBtn.disabled = false;
+    resultImg.src = imageUrl;
+    resultImg.onload = () => {
+      placeholderEl.style.display = 'none';
+      resultImgWrap.style.display = 'block';
+    };
+    resultImg.onerror = () => {
+      errEl.textContent = 'Image expired or failed to load. Try again.';
+      errEl.className = 'err show';
+      placeholderEl.style.display = 'flex';
+    };
+
+    setTimeout(() => {
+      if (activeEngine === 'morph') setPrompt(nextPrompt(MORPH_PROMPTS, morphUsed));
+      else if (activeEngine === 'zimage') setPrompt(nextPrompt(ZIMAGE_PROMPTS, zimageUsed));
+      else setPrompt(nextPrompt(PROMPTS, nanoUsed));
+    }, 800);
+
+  } catch(e) {
+    statusEl.className = 'status';
+    genBtn.disabled = false;
+    errEl.textContent = e.message || 'Something went wrong. Try again.';
+    errEl.className = 'err show';
+    placeholderEl.style.display = 'flex';
+  }
+});
+
+document.getElementById('saveBtn').addEventListener('click', () => {
+  const a = document.createElement('a');
+  a.href = resultImg.src;
+  a.download = 'conjure-' + Date.now() + '.jpg';
+  a.target = '_blank';
+  a.click();
+});
+
+setPrompt(nextPrompt(PROMPTS, nanoUsed));
+updateCount();
+syncEngineUI();
+</script></body></html>
